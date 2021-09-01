@@ -62,7 +62,7 @@ def museo():
 
     museo['artistas'] = lt.newList('ARRAY_LIST')
                                    
-    return (artistas, obras)
+    return (museo)
 
 # Funciones para agregar informacion al catalogo
 def crearArtista(nombre, nacionalidad, genero, ano_nacimiento):
