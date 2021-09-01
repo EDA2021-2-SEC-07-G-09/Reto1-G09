@@ -102,6 +102,6 @@ def addArtista(museo, artista):
     
 
 
-def addObra(museo, obra:
+def addObra(museo, obra):
     
     lt.addLast(museo['obra'], obra)
