@@ -34,14 +34,8 @@ def inicatalog():
     catalog = model.newCatalog()
     return catalog
 
-def loadData(museo):
-    """
-    Carga los datos de los archivos y cargar los datos en la
-    estructura de datos
-    """
-    cargarartistas(museo)
-    cargarobras(museo)
-    
+
+
 
 
 # Funciones para la carga de datos
