@@ -44,6 +44,7 @@ def printMenu():
     print("6- Consultar el costo de transportar las obras de un departamento")
     print("7- Consultar la nueva exposición propuesta según el area disponible")
     print("0- Salir")
+
 museo = None
 
 def museo():
