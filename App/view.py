@@ -44,7 +44,12 @@ def printMenu():
     print("6- Consultar el costo de transportar las obras de un departamento")
     print("7- Consultar la nueva exposición propuesta según el area disponible")
     print("0- Salir")
-catalog = None
+museo = None
+
+def museo():
+    return controller.museo()
+def cargarDatos():
+    return controller.cargarDatos()
 
 """
 Menu principal
@@ -54,6 +59,14 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
+        museo= museo()
+        cargarDatos(museo)
+        print('Informacion de artistas cargados' + controller.cargarArtistas(museo))
+        print('Información de las obras cargadas'+ controller.cargarObras(museo) )
+        print('Artistas cargados: ' + str(lt.size(museo['artistas'])))
+        print('Obras cargados: ' + str(lt.size(museo['obras'])))
+        print('Ultimas tres obras'+ controller.darUltimasObras(museo))
+        print('Ultimos tres artistas'+ controller.darUltimosArtistas(museo))
 
     elif int(inputs[0]) == 2:
         print("Artistas ordenados cronológicamente:")
@@ -75,4 +88,36 @@ while True:
 
     elif int(inputs[0]) == 0:
         sys.exit(0)
+
+while True:
+    printMenu()
+    inputs = input('Seleccione una opción para continuar\n')
+    if int(inputs[0]) == 1:
+        print("Cargando información de los archivos ....")
+        catalog = initCatalog()
+        loadData(catalog)
+        print('Libros cargados: ' + str(lt.size(catalog['books'])))
+        print('Autores cargados: ' + str(lt.size(catalog['authors'])))
+        print('Géneros cargados: ' + str(lt.size(catalog['tags'])))
+        print('Asociación de Géneros a Libros cargados: ' +
+              str(lt.size(catalog['book_tags'])))
+
+    elif int(inputs[0]) == 2:
+        number = input("Buscando los TOP ?: ")
+        books = controller.getBestBooks(catalog, int(number))
+        printBestBooks(books)
+
+    elif int(inputs[0]) == 3:
+        authorname = input("Nombre del autor a buscar: ")
+        author = controller.getBooksByAuthor(catalog, authorname)
+        printAuthorData(author)
+
+    elif int(inputs[0]) == 4:
+        label = input("Etiqueta a buscar: ")
+        book_count = controller.countBooksByTag(catalog, label)
+        print('Se encontraron: ', book_count, ' Libros')
+
+    else:
+        sys.exit(0)
 sys.exit(0)
+

@@ -20,6 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
+from typing import MutableMapping
 import config as cf
 import model
 import csv
@@ -31,15 +32,17 @@ El controlador se encarga de mediar entre la vista y el modelo.
 
 # Inicialización del Catálogo de libros
 def inicatalog():
-    catalog = model.newCatalog()
+    catalog = model.museo()
     return catalog
 
-
+def cargarDatos(museo):
+    cargarArtistas(museo)
+    cargarObras(museo)
 
 
 
 # Funciones para la carga de datos
-def cargarArtistas(museo, artista):
+def cargarArtistas(museo):
     """
     Carga los libros del archivo.  Por cada libro se toman sus autores y por
     cada uno de ellos, se crea en la lista de autores, a dicho autor y una
@@ -47,18 +50,35 @@ def cargarArtistas(museo, artista):
     """
     booksfile = cf.data_dir + 'Data/Artists-utf8-small.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
-    for book in input_file:
-        model.addartista(museo, artista)
+    for artista in input_file:
+        model.addArtista(museo, artista)
 
 
-def cargarObras(museo, obra):
+def cargarObras(museo):
     """
     Carga todos los tags del archivo y los agrega a la lista de tags
     """
     tagsfile = cf.data_dir + 'Data/Artworks-utf8-small.csv'
     input_file = csv.DictReader(open(tagsfile, encoding='utf-8'))
-    for tag in input_file:
-        model.addobra(museo, obra)
+    for obra in input_file:
+        model.addObra(museo, obra)
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
+
+def darUltimosArtistas(museo):
+    ultimos=model.darUltimossArtistas(museo)
+    return ultimos
+def darUltimasObras(museo):
+    ultimos=model.darUltimossObras(museo)
+    return ultimos
+
+def numeroArtistas(museo):
+    size= model.numeroArtistas(museo)
+    return size
+def numeroObras(museo):
+    size= model.numeroObras(museo)
+    return size
+
+
+

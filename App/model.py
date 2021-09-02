@@ -105,3 +105,22 @@ def addArtista(museo, artista):
 def addObra(museo, obra):
     
     lt.addLast(museo['obra'], obra)
+
+# Funciones de consulta
+def darUltimosArtistas(museo):
+    a=museo['artistas']
+    b= lt.size(museo['artistas'])
+    listaUltimos= lt.subList(museo['artistas'], b-3,3)
+    return listaUltimos
+def darUltimasObras(museo):
+    a=museo['obras']
+    b= lt.size(museo['obras'])
+    listaUltimos= lt.subList(museo['obras'], b-3,3)
+    return listaUltimos
+
+def numeroArtistas(museo):
+    size= lt.size(museo['artistas'])
+    return size
+def numeroObras(museo):
+    size= lt.size(museo['obras'])
+    return size
