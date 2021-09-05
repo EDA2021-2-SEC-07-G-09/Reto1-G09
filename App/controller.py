@@ -48,7 +48,7 @@ def cargarArtistas(museo):
     cada uno de ellos, se crea en la lista de autores, a dicho autor y una
     referencia al libro que se esta procesando.
     """
-    booksfile = cf.data_dir + 'Data/Artists-utf8-small.csv'
+    booksfile = cf.data_dir + 'Artists-utf8-small.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for artista in input_file:
         model.addArtista(museo, artista)
@@ -58,7 +58,7 @@ def cargarObras(museo):
     """
     Carga todos los tags del archivo y los agrega a la lista de tags
     """
-    tagsfile = cf.data_dir + 'Data/Artworks-utf8-small.csv'
+    tagsfile = cf.data_dir + 'Artworks-utf8-small.csv'
     input_file = csv.DictReader(open(tagsfile, encoding='utf-8'))
     for obra in input_file:
         model.addObra(museo, obra)
@@ -67,10 +67,10 @@ def cargarObras(museo):
 # Funciones de consulta sobre el catálogo
 
 def darUltimosArtistas(museo):
-    ultimos=model.darUltimossArtistas(museo)
+    ultimos=model.darUltimosArtistas(museo)
     return ultimos
 def darUltimasObras(museo):
-    ultimos=model.darUltimossObras(museo)
+    ultimos=model.darUltimasObras(museo)
     return ultimos
 
 def numeroArtistas(museo):
@@ -79,6 +79,3 @@ def numeroArtistas(museo):
 def numeroObras(museo):
     size= model.numeroObras(museo)
     return size
-
-
-

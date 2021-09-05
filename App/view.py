@@ -45,12 +45,12 @@ def printMenu():
     print("7- Consultar la nueva exposición propuesta según el area disponible")
     print("0- Salir")
 
-museo = None
+
 
 def museo():
-    return controller.museo()
-def cargarDatos():
-    return controller.cargarDatos()
+    return controller.inicatalog()
+def cargarDatos(museo):
+    return controller.cargarDatos(museo)
 
 """
 Menu principal
@@ -62,12 +62,12 @@ while True:
         print("Cargando información de los archivos ....")
         museo= museo()
         cargarDatos(museo)
-        print('Informacion de artistas cargados' + controller.cargarArtistas(museo))
-        print('Información de las obras cargadas'+ controller.cargarObras(museo) )
+        print('Informacion de artistas cargados' + str(lt.size(museo['artistas'])))
+        print('Información de las obras cargadas'+ str(lt.size(museo['artistas'])) )
         print('Artistas cargados: ' + str(lt.size(museo['artistas'])))
         print('Obras cargados: ' + str(lt.size(museo['obras'])))
-        print('Ultimas tres obras'+ controller.darUltimasObras(museo))
-        print('Ultimos tres artistas'+ controller.darUltimosArtistas(museo))
+        print('Ultimas tres obras'+ str(controller.darUltimasObras(museo)))
+        print('Ultimos tres artistas'+ str(controller.darUltimosArtistas(museo)))
 
     elif int(inputs[0]) == 2:
         print("Artistas ordenados cronológicamente:")
@@ -121,4 +121,3 @@ while True:
     else:
         sys.exit(0)
 sys.exit(0)
-

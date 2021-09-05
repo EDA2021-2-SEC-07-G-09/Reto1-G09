@@ -61,7 +61,7 @@ def museo():
     
 
     museo['artistas'] = lt.newList('ARRAY_LIST')
-                                   
+    museo['obras'] = lt.newList('ARRAY_LIST')                          
     return (museo)
 
 # Funciones para agregar informacion al catalogo
@@ -104,7 +104,7 @@ def addArtista(museo, artista):
 
 def addObra(museo, obra):
     
-    lt.addLast(museo['obra'], obra)
+    lt.addLast(museo['obras'], obra)
 
 # Funciones de consulta
 def darUltimosArtistas(museo):
@@ -112,6 +112,7 @@ def darUltimosArtistas(museo):
     b= lt.size(museo['artistas'])
     listaUltimos= lt.subList(museo['artistas'], b-3,3)
     return listaUltimos
+
 def darUltimasObras(museo):
     a=museo['obras']
     b= lt.size(museo['obras'])
@@ -121,6 +122,7 @@ def darUltimasObras(museo):
 def numeroArtistas(museo):
     size= lt.size(museo['artistas'])
     return size
+
 def numeroObras(museo):
     size= lt.size(museo['obras'])
     return size
