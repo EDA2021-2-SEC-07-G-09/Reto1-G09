@@ -46,7 +46,7 @@ los mismos.
 
 # Funciones de ordenamiento
 
-def museo():
+def museoArrayList():
     """
     Inicializa el catálogo de libros. Crea una lista vacia para guardar
     todos los libros, adicionalmente, crea una lista vacia para los autores,
@@ -62,6 +62,24 @@ def museo():
 
     museo['artistas'] = lt.newList('ARRAY_LIST')
     museo['obras'] = lt.newList('ARRAY_LIST')                          
+    return (museo)
+
+def museoLinkedList():
+    """
+    Inicializa el catálogo de libros. Crea una lista vacia para guardar
+    todos los libros, adicionalmente, crea una lista vacia para los autores,
+    una lista vacia para los generos y una lista vacia para la asociación
+    generos y libros. Retorna el catalogo inicializado.
+    """
+    
+
+    museo= {'artistas': None,
+            'obras': None}
+
+    
+
+    museo['artistas'] = lt.newList('LINKED_LIST')
+    museo['obras'] = lt.newList('LINKED_LIST')                          
     return (museo)
 
 # Funciones para agregar informacion al catalogo

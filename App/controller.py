@@ -31,8 +31,12 @@ El controlador se encarga de mediar entre la vista y el modelo.
 """
 
 # Inicialización del Catálogo de libros
-def inicatalog():
-    catalog = model.museo()
+def inicatalogArrayList():
+    catalog = model.museoArrayList()
+    return catalog
+
+def inicatalogLinkedList():
+    catalog = model.museoLinkedList()
     return catalog
 
 def cargarDatos(museo):

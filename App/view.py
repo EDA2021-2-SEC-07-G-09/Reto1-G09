@@ -47,8 +47,10 @@ def printMenu():
 
 
 
-def museo():
-    return controller.inicatalog()
+def museoLinkedList():
+    return controller.inicatalogLinkedList()
+def museoArrayList():
+    return controller.inicatalogArrayList()
 def cargarDatos(museo):
     return controller.cargarDatos(museo)
 
@@ -59,9 +61,15 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+        x= input('Diga que tipo de lista necesita entre ARRAY_LIST y LINKED_LIST')
         print("Cargando información de los archivos ....")
-        museo= museo()
-        cargarDatos(museo)
+        if x== 'LINKED_LIST':
+            museo= museoLinkedList()
+            cargarDatos(museo)
+        elif x== 'ARRAY_LIST':
+            museo= museoArrayList()
+            cargarDatos(museo)
+        
         print('Informacion de artistas cargados' + str(lt.size(museo['artistas'])))
         print('Información de las obras cargadas'+ str(lt.size(museo['artistas'])) )
         print('Artistas cargados: ' + str(lt.size(museo['artistas'])))
