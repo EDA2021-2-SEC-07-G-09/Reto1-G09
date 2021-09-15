@@ -53,6 +53,14 @@ def museoArrayList():
     return controller.inicatalogArrayList()
 def cargarDatos(museo):
     return controller.cargarDatos(museo)
+def imprimirDatosObra(obras):
+    for obra in obras['elements']:
+        x={'Title':obra['Title'],
+        'Date':obra['Date'],
+        'Classification': obra['Classification'],
+        'Dimensions': obra['Dimensions']}
+        print(x)
+
 
 """
 Menu principal
@@ -83,35 +91,38 @@ while True:
 
     elif int(inputs[0]) == 3:
         articulo= 'obras'
-        museo= museoArrayList
-        cargarDatos()
         lista= museo[articulo]
-        y= input('Indique el temaño de la muestra')
+        y= int(input('Indique el temaño de la muestra'))
 
         if int(y)<=lt.size(museo['obras']):
             lista_cortada= controller.cortarLista(lista, y)
             x= input('Diga que tipo de ordenamiento iterativo desea, entre Insertion, Shell, Merge y Quick')
             fechai= input('Inserte la fecha inicial en el formato AAAA-MM-DD')
             fechaf= input('Inserte la fecha final en el formato AAAA-MM-DD')
-            ordenamiento= controller.cmpArtworkByDateAcquired()
         
             if x=='Insertion':
                 museo= museoArrayList()
-                z= controller.sortArrayListInsertion(lista, ordenamiento)
+                z= controller.sortArrayListInsertion(lista_cortada)
             elif x=='Shell':
-                z= controller.sortArrayListShell(lista, ordenamiento)
+                z= controller.sortArrayListShell(lista_cortada)
 
             elif x== 'Merge':
-                z= controller.sortArrayListMerge(lista, ordenamiento)
+                z= controller.sortArrayListMerge(lista_cortada)
 
             elif x== 'Quick':
-                z= controller.sortArrayListQuick(lista, ordenamiento)
+                z= controller.sortArrayListQuick(lista_cortada)
             lista_final= controller.fechasRango(z, fechai, fechaf)
+            ultimas=controller.darUltimasObras(lista_final)
+            primeras=controller.darPrimerasObras(lista_final)
+            print(ultimas)
+            print(primeras)
 
             print("Aquisiciones en el rango de fechas:"+ str(lt.size(lista_final)))
             print("Obras adquiridas por compra: " + str(controller.obrasPurchase(lista_final)))
-            print('Ultimas tres obras'+ str(controller.darUltimasObras(lista_final)))
-            print('Primeras tres artistas'+ str(controller.darPrimerasObras(lista_final)))
+            print('Ultimas tres obras: ') 
+            imprimirDatosObra(ultimas)
+            print('Primeras tres obras:')
+            imprimirDatosObra(primeras)
         else: 
             print("El tamaño de la muestra pedido supera la cantidad de datos  cargados")
     

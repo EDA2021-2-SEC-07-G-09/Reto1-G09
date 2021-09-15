@@ -69,20 +69,20 @@ def cargarObras(museo):
         model.addObra(museo, obra)
 # Funciones de ordenamiento
 
-def sortArrayListInsertion(lista, cmp):
-    ordenada= model.sortArrayListInsertion(lista, cmp)
+def sortArrayListInsertion(lista):
+    ordenada= model.sortArrayListInsertion(lista)
     return ordenada
 
-def sortArrayListShell(lista, cmp):
-    ordenada= model.sortArrayListShell(lista, cmp)
+def sortArrayListShell(lista):
+    ordenada= model.sortArrayListShell(lista)
     return ordenada
 
-def sortArrayListMerge(lista, cmp):
-    ordenada= model.sortArrayListMerge(lista, cmp)
+def sortArrayListMerge(lista):
+    ordenada= model.sortArrayListMerge(lista)
     return ordenada
 
-def sortArrayListQuick(lista, cmp):
-    ordenada= model.sortArrayListQuick(lista, cmp)
+def sortArrayListQuick(lista):
+    ordenada= model.sortArrayListQuick(lista)
     return ordenada
 def cmpArtworkByDateAcquired(artwork1, artwork2):
     """Devuelve True si la DateAquired de artwork1 es menor que la de artwork2
@@ -105,7 +105,7 @@ def darPrimerossArtistas(museo):
     ultimos=model.darUltimosArtistas(museo)
     return ultimos
 def darPrimerasObras(museo):
-    ultimos=model.darUltimasObras(museo)
+    ultimos=model.darPrimerasObras(museo)
     return ultimos
 def numeroArtistas(museo):
     size= model.numeroArtistas(museo)

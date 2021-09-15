@@ -51,7 +51,7 @@ def museoArrayList():
     
 
     museo['artistas'] = lt.newList('ARRAY_LIST')
-    museo['obras'] = lt.newList('ARRAY_LIST')                          
+    museo['obras'] = lt.newList('ARRAY_LIST')                     
     return (museo)
 
 def museoLinkedList():
@@ -146,12 +146,12 @@ def numeroObras(museo):
     return size
 def obrasPurchase(obras):
     numero=0
-    for obra in obras:
+    for obra in obras['elements']:
         if obra['CreditLine']== 'Purchase':
              numero +=1
     return numero
 def cortarLista(lista, muestra):
-    lista_cortada= lt.subList(lista, 0,muestra)
+    lista_cortada= lt.subList(lista, 0, muestra)
     return lista_cortada
     
 
@@ -160,34 +160,32 @@ def cortarLista(lista, muestra):
 def cmpArtworkByDateAcquired(artwork1, artwork2):
     """Devuelve True si la DateAquired de artwork1 es menor que la de artwork2
     artwork: Información de la primera obra que incluye su"""
-    a= artwork1['DateAqcuired'].split('-')
-    b= artwork2['DateAqcuired'].split('-')
-    if float(a[1])<float(b[1]):
+    a= artwork1['DateAcquired']
+    b= artwork2['DateAcquired']
+    x= dt.datetime.strptime(a, '%Y-%m-%d')
+    y= dt.datetime.strptime(b, '%Y-%m-%d')
+    if x<y:
         return True
-    if float(a[1])==float(b[1]):
-        if float(a[2])<float(b[2]):
-            return True
-        if float(a[2])==float(b[2]):
-            if float(a[3])<float(b[3]):
-                return True
-            if float(a[3])==float(b[3]):
-                return False
     else: 
         return False
 
 # Funciones de ordenamiento
-def sortArrayListInsertion(lista, cmp):
+def sortArrayListInsertion(lista):
     size = lt.size(lista) 
     pos1=1
     while pos1<= size:
         pos2=pos1
-        while (pos2 >1) and cmp(lt.getElement(lista, pos2),lt.getElement(lista, pos2-1)):
+        while (pos2 >1) and cmpArtworkByDateAcquired(lt.getElement(lista, pos2),lt.getElement(lista, pos2-1)):
             lt.exchange (lista, pos2, pos2-1)
             pos2 -= 1
         pos1+=1
     return lista
 
-def sortArrayListShell(lista, cmp):
+def sortArrayListShell(lista):
+    sa.sort(lista,cmpArtworkByDateAcquired)
+    return lista
+
+def sortArrayListShell2(lista):
     n = lt.size(lista)
     h = 1
     while h < (n//3): 
@@ -199,9 +197,9 @@ def sortArrayListShell(lista, cmp):
                 lt.exchange (lista, j+1, j-h+1)
                 j -= h
         h //= 3
-    return lista
+    return lista   
 
-def sortArrayListMerge(lista, cmp):
+def sortArrayListMerge(lista):
     size = lt.size(lista)
     if size > 1:
         mid = (size // 2)
@@ -211,8 +209,8 @@ def sortArrayListMerge(lista, cmp):
         rightlist = lt.subList(lista, mid+1, size - mid)
 
         """se hace el llamado recursivo con la lista izquierda y derecha"""
-        sortArrayListMerge(leftlist, cmp)
-        sortArrayListMerge(rightlist, cmp)
+        sortArrayListMerge(leftlist)
+        sortArrayListMerge(rightlist)
 
         """i recorre la lista izquierda, j la derecha y k la lista original"""
         i = j = k = 1
@@ -224,7 +222,7 @@ def sortArrayListMerge(lista, cmp):
             elemi = lt.getElement(leftlist, i)
             elemj = lt.getElement(rightlist, j)
             """compara y ordena los elementos"""
-            if cmp(elemj, elemi):  
+            if cmpArtworkByDateAcquired(elemj, elemi):  
                 lt.changeInfo(lista, k, elemj)
                 j += 1
             else:                           
@@ -244,7 +242,7 @@ def sortArrayListMerge(lista, cmp):
             k += 1
     return lista
 
-def partition(lista, lo, hi, cmp):
+def partition(lista, lo, hi):
     """
     Función que va dejando el pivot en su lugar, mientras mueve
     elementos menores a la izquierda del pivot y elementos mayores a
@@ -252,7 +250,7 @@ def partition(lista, lo, hi, cmp):
     """
     follower = leader = lo
     while leader < hi:
-        if cmp(
+        if cmpArtworkByDateAcquired(
            lt.getElement(lista, leader), lt.getElement(lista, hi)):
             lt.exchange(lista, follower, leader)
             follower += 1
@@ -261,7 +259,7 @@ def partition(lista, lo, hi, cmp):
     return follower
 
 
-def quicksort(lista, lo, hi, cmp):
+def quicksort(lista, lo, hi):
     """
     Se localiza el pivot, utilizando la funcion de particion.
     Luego se hace la recursión con los elementos a la izquierda del pivot
@@ -269,27 +267,25 @@ def quicksort(lista, lo, hi, cmp):
     """
     if (lo >= hi):
         return
-    pivot = partition(lista, lo, hi, cmp)
-    quicksort(lista, lo, pivot-1, cmp)
-    quicksort(lista, pivot+1, hi, cmp)
+    pivot = partition(lista, lo, hi)
+    quicksort(lista, lo, pivot-1)
+    quicksort(lista, pivot+1, hi)
 
 
-def sortArrayListQuick(lista, cmp):
-    quicksort(lista, 1, lt.size(lista), cmp)
+def sortArrayListQuick(lista):
+    quicksort(lista, 1, lt.size(lista))
     return lista
 
 def fechasRango(lista, fechai, fechaf):
-    i=0
-    listaf=[]
+    
+    listaf=lt.newList('ARRAY_LIST')
     a= dt.datetime.strptime(fechai, '%Y-%m-%d')
     b= dt.datetime.strptime(fechaf, '%Y-%m-%d')
-    while i<len(lista):
-        obra=lista[i]
+    for obra in lista['elements']:
         x=obra['DateAcquired']
         c= dt.datetime.strptime(x, '%Y-%m-%d')
         if c<b and c>a:
-            listaf.append[obra]
-        i+=1
+            lt.addLast(listaf, obra)
     return listaf
 
         
