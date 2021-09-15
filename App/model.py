@@ -25,6 +25,7 @@
 
 
 import config as cf
+import datetime as dt
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
@@ -35,17 +36,6 @@ los mismos.
 """
 
 # Construccion de modelos
-
-# Funciones para agregar informacion al catalogo
-
-# Funciones para creacion de datos
-
-# Funciones de consulta
-
-# Funciones utilizadas para comparar elementos dentro de una lista
-
-# Funciones de ordenamiento
-
 def museoArrayList():
     """
     Inicializa el catálogo de libros. Crea una lista vacia para guardar
@@ -81,6 +71,7 @@ def museoLinkedList():
     museo['artistas'] = lt.newList('LINKED_LIST')
     museo['obras'] = lt.newList('LINKED_LIST')                          
     return (museo)
+
 
 # Funciones para agregar informacion al catalogo
 def crearArtista(nombre, nacionalidad, genero, ano_nacimiento):
@@ -123,19 +114,28 @@ def addArtista(museo, artista):
 def addObra(museo, obra):
     
     lt.addLast(museo['obras'], obra)
+# Funciones para creacion de datos
 
 # Funciones de consulta
 def darUltimosArtistas(museo):
-    a=museo['artistas']
-    b= lt.size(museo['artistas'])
-    listaUltimos= lt.subList(museo['artistas'], b-3,3)
+    b= lt.size(museo)
+    listaUltimos= lt.subList(museo, (b-3),3)
     return listaUltimos
 
 def darUltimasObras(museo):
-    a=museo['obras']
-    b= lt.size(museo['obras'])
-    listaUltimos= lt.subList(museo['obras'], b-3,3)
+    b= lt.size(museo)
+    listaUltimos= lt.subList(museo, (b-3),3)
     return listaUltimos
+
+def darPrimerosArtistas(museo):
+    listaUltimos= lt.subList(museo, 0,3)
+    return listaUltimos
+
+def darPrimerasObras(museo):
+
+    listaUltimos= lt.subList(museo, 0,3)
+    return listaUltimos
+
 
 def numeroArtistas(museo):
     size= lt.size(museo['artistas'])
@@ -144,3 +144,161 @@ def numeroArtistas(museo):
 def numeroObras(museo):
     size= lt.size(museo['obras'])
     return size
+def obrasPurchase(obras):
+    numero=0
+    for obra in obras:
+        if obra['CreditLine']== 'Purchase':
+             numero +=1
+    return numero
+def cortarLista(lista, muestra):
+    lista_cortada= lt.subList(lista, 0,muestra)
+    return lista_cortada
+    
+
+
+# Funciones utilizadas para comparar elementos dentro de una lista
+def cmpArtworkByDateAcquired(artwork1, artwork2):
+    """Devuelve True si la DateAquired de artwork1 es menor que la de artwork2
+    artwork: Información de la primera obra que incluye su"""
+    a= artwork1['DateAqcuired'].split('-')
+    b= artwork2['DateAqcuired'].split('-')
+    if float(a[1])<float(b[1]):
+        return True
+    if float(a[1])==float(b[1]):
+        if float(a[2])<float(b[2]):
+            return True
+        if float(a[2])==float(b[2]):
+            if float(a[3])<float(b[3]):
+                return True
+            if float(a[3])==float(b[3]):
+                return False
+    else: 
+        return False
+
+# Funciones de ordenamiento
+def sortArrayListInsertion(lista, cmp):
+    size = lt.size(lista) 
+    pos1=1
+    while pos1<= size:
+        pos2=pos1
+        while (pos2 >1) and cmp(lt.getElement(lista, pos2),lt.getElement(lista, pos2-1)):
+            lt.exchange (lista, pos2, pos2-1)
+            pos2 -= 1
+        pos1+=1
+    return lista
+
+def sortArrayListShell(lista, cmp):
+    n = lt.size(lista)
+    h = 1
+    while h < (n//3): 
+        h = 3*h + 1 
+    while (h >= 1):
+        for i in range (1+h, n+1): 
+            j = i
+            while (j>=h) and cmpArtworkByDateAcquired(lt.getElement(lista, j+1),lt.getElement(lista, j-h+1)):
+                lt.exchange (lista, j+1, j-h+1)
+                j -= h
+        h //= 3
+    return lista
+
+def sortArrayListMerge(lista, cmp):
+    size = lt.size(lista)
+    if size > 1:
+        mid = (size // 2)
+        """se divide la lista original, en dos partes, izquierda y derecha,
+        desde el punto mid."""
+        leftlist = lt.subList(lista, 1, mid)
+        rightlist = lt.subList(lista, mid+1, size - mid)
+
+        """se hace el llamado recursivo con la lista izquierda y derecha"""
+        sortArrayListMerge(leftlist, cmp)
+        sortArrayListMerge(rightlist, cmp)
+
+        """i recorre la lista izquierda, j la derecha y k la lista original"""
+        i = j = k = 1
+
+        leftelements = lt.size(leftlist)
+        rightelements = lt.size(rightlist)
+
+        while (i <= leftelements) and (j <= rightelements):
+            elemi = lt.getElement(leftlist, i)
+            elemj = lt.getElement(rightlist, j)
+            """compara y ordena los elementos"""
+            if cmp(elemj, elemi):  
+                lt.changeInfo(lista, k, elemj)
+                j += 1
+            else:                           
+                lt.changeInfo(lista, k, elemi)
+                i += 1
+            k += 1
+
+        """Agrega los elementos que no se comprararon y estan ordenados"""
+        while i <= leftelements:
+            lt.changeInfo(lista, k, lt.getElement(leftlist, i))
+            i += 1
+            k += 1
+
+        while j <= rightelements:
+            lt.changeInfo(lista, k, lt.getElement(rightlist, j))
+            j += 1
+            k += 1
+    return lista
+
+def partition(lista, lo, hi, cmp):
+    """
+    Función que va dejando el pivot en su lugar, mientras mueve
+    elementos menores a la izquierda del pivot y elementos mayores a
+    la derecha del pivot
+    """
+    follower = leader = lo
+    while leader < hi:
+        if cmp(
+           lt.getElement(lista, leader), lt.getElement(lista, hi)):
+            lt.exchange(lista, follower, leader)
+            follower += 1
+        leader += 1
+    lt.exchange(lista, follower, hi)
+    return follower
+
+
+def quicksort(lista, lo, hi, cmp):
+    """
+    Se localiza el pivot, utilizando la funcion de particion.
+    Luego se hace la recursión con los elementos a la izquierda del pivot
+    y los elementos a la derecha del pivot
+    """
+    if (lo >= hi):
+        return
+    pivot = partition(lista, lo, hi, cmp)
+    quicksort(lista, lo, pivot-1, cmp)
+    quicksort(lista, pivot+1, hi, cmp)
+
+
+def sortArrayListQuick(lista, cmp):
+    quicksort(lista, 1, lt.size(lista), cmp)
+    return lista
+
+def fechasRango(lista, fechai, fechaf):
+    i=0
+    listaf=[]
+    a= dt.datetime.strptime(fechai, '%Y-%m-%d')
+    b= dt.datetime.strptime(fechaf, '%Y-%m-%d')
+    while i<len(lista):
+        obra=lista[i]
+        x=obra['DateAcquired']
+        c= dt.datetime.strptime(x, '%Y-%m-%d')
+        if c<b and c>a:
+            listaf.append[obra]
+        i+=1
+    return listaf
+
+        
+
+       
+
+
+# Funciones para agregar informacion al catalogo
+
+
+
+

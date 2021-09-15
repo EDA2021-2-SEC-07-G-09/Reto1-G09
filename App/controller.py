@@ -20,6 +20,7 @@
  * along withthis program.If not, see <http://www.gnu.org/licenses/>.
  """
 
+from io import DEFAULT_BUFFER_SIZE
 from typing import MutableMapping
 import config as cf
 import model
@@ -68,6 +69,30 @@ def cargarObras(museo):
         model.addObra(museo, obra)
 # Funciones de ordenamiento
 
+def sortArrayListInsertion(lista, cmp):
+    ordenada= model.sortArrayListInsertion(lista, cmp)
+    return ordenada
+
+def sortArrayListShell(lista, cmp):
+    ordenada= model.sortArrayListShell(lista, cmp)
+    return ordenada
+
+def sortArrayListMerge(lista, cmp):
+    ordenada= model.sortArrayListMerge(lista, cmp)
+    return ordenada
+
+def sortArrayListQuick(lista, cmp):
+    ordenada= model.sortArrayListQuick(lista, cmp)
+    return ordenada
+def cmpArtworkByDateAcquired(artwork1, artwork2):
+    """Devuelve True si la DateAquired de artwork1 es menor que la de artwork2
+    artwork: Información de la primera obra que incluye su"""
+    resultado= model.cmpArtworkByDateAcquired(artwork1, artwork2)
+    return resultado
+def fechasRango(lista, fechai, fechaf):
+    listaf= model.fechasRango(lista,fechai,fechaf)
+    return listaf
+
 # Funciones de consulta sobre el catálogo
 
 def darUltimosArtistas(museo):
@@ -76,10 +101,21 @@ def darUltimosArtistas(museo):
 def darUltimasObras(museo):
     ultimos=model.darUltimasObras(museo)
     return ultimos
-
+def darPrimerossArtistas(museo):
+    ultimos=model.darUltimosArtistas(museo)
+    return ultimos
+def darPrimerasObras(museo):
+    ultimos=model.darUltimasObras(museo)
+    return ultimos
 def numeroArtistas(museo):
     size= model.numeroArtistas(museo)
     return size
 def numeroObras(museo):
     size= model.numeroObras(museo)
     return size
+def obrasPurchase(lista):
+    obras= model.obrasPurchase(lista)
+    return obras
+def cortarLista(lista, muestra):
+    lista_nueva= model.cortarLista(lista,muestra)
+    return lista_nueva

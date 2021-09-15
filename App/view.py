@@ -74,14 +74,47 @@ while True:
         print('Información de las obras cargadas'+ str(lt.size(museo['artistas'])) )
         print('Artistas cargados: ' + str(lt.size(museo['artistas'])))
         print('Obras cargados: ' + str(lt.size(museo['obras'])))
-        print('Ultimas tres obras'+ str(controller.darUltimasObras(museo)))
-        print('Ultimos tres artistas'+ str(controller.darUltimosArtistas(museo)))
+        print('Ultimas tres obras'+ str(controller.darUltimasObras(museo['obras'])))
+        print('Ultimos tres artistas'+ str(controller.darUltimosArtistas(museo['artistas'])))
 
     elif int(inputs[0]) == 2:
+
         print("Artistas ordenados cronológicamente:")
 
     elif int(inputs[0]) == 3:
-        print("Adquisiciones ordenadas cronológicamente:")
+        articulo= 'obras'
+        museo= museoArrayList
+        cargarDatos()
+        lista= museo[articulo]
+        y= input('Indique el temaño de la muestra')
+
+        if int(y)<=lt.size(museo['obras']):
+            lista_cortada= controller.cortarLista(lista, y)
+            x= input('Diga que tipo de ordenamiento iterativo desea, entre Insertion, Shell, Merge y Quick')
+            fechai= input('Inserte la fecha inicial en el formato AAAA-MM-DD')
+            fechaf= input('Inserte la fecha final en el formato AAAA-MM-DD')
+            ordenamiento= controller.cmpArtworkByDateAcquired()
+        
+            if x=='Insertion':
+                museo= museoArrayList()
+                z= controller.sortArrayListInsertion(lista, ordenamiento)
+            elif x=='Shell':
+                z= controller.sortArrayListShell(lista, ordenamiento)
+
+            elif x== 'Merge':
+                z= controller.sortArrayListMerge(lista, ordenamiento)
+
+            elif x== 'Quick':
+                z= controller.sortArrayListQuick(lista, ordenamiento)
+            lista_final= controller.fechasRango(z, fechai, fechaf)
+
+            print("Aquisiciones en el rango de fechas:"+ str(lt.size(lista_final)))
+            print("Obras adquiridas por compra: " + str(controller.obrasPurchase(lista_final)))
+            print('Ultimas tres obras'+ str(controller.darUltimasObras(lista_final)))
+            print('Primeras tres artistas'+ str(controller.darPrimerasObras(lista_final)))
+        else: 
+            print("El tamaño de la muestra pedido supera la cantidad de datos  cargados")
+    
 
     elif int(inputs[0]) == 4:
         print("Obras de un artista ordenadas por técnica:")
@@ -98,34 +131,3 @@ while True:
     elif int(inputs[0]) == 0:
         sys.exit(0)
 
-while True:
-    printMenu()
-    inputs = input('Seleccione una opción para continuar\n')
-    if int(inputs[0]) == 1:
-        print("Cargando información de los archivos ....")
-        catalog = initCatalog()
-        loadData(catalog)
-        print('Libros cargados: ' + str(lt.size(catalog['books'])))
-        print('Autores cargados: ' + str(lt.size(catalog['authors'])))
-        print('Géneros cargados: ' + str(lt.size(catalog['tags'])))
-        print('Asociación de Géneros a Libros cargados: ' +
-              str(lt.size(catalog['book_tags'])))
-
-    elif int(inputs[0]) == 2:
-        number = input("Buscando los TOP ?: ")
-        books = controller.getBestBooks(catalog, int(number))
-        printBestBooks(books)
-
-    elif int(inputs[0]) == 3:
-        authorname = input("Nombre del autor a buscar: ")
-        author = controller.getBooksByAuthor(catalog, authorname)
-        printAuthorData(author)
-
-    elif int(inputs[0]) == 4:
-        label = input("Etiqueta a buscar: ")
-        book_count = controller.countBooksByTag(catalog, label)
-        print('Se encontraron: ', book_count, ' Libros')
-
-    else:
-        sys.exit(0)
-sys.exit(0)
