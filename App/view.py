@@ -23,6 +23,7 @@
 import config as cf
 import sys
 import controller
+import time
 from DISClib.ADT import list as lt
 assert cf
 
@@ -57,9 +58,18 @@ def imprimirDatosObra(obras):
     for obra in obras['elements']:
         x={'Title':obra['Title'],
         'Date':obra['Date'],
-        'Classification': obra['Classification'],
+        'Medium': obra['Medium'],
         'Dimensions': obra['Dimensions']}
         print(x)
+def imprimirDatosArtista(artistas):
+    for artista in artistas['elements']:
+        x={'Nombre': artista['DisplayName'],
+        'Año de nacimiento': artista['BeginDate'],
+        'Año de fallecimiento': artista['EndDate'],
+        'Nacionalidad': artista['Nationality'],
+        'Genero': artista['Gender']}
+        print(x)
+
 
 
 """
@@ -86,8 +96,47 @@ while True:
         print('Ultimos tres artistas'+ str(controller.darUltimosArtistas(museo['artistas'])))
 
     elif int(inputs[0]) == 2:
+        articulo= 'artistas'
+        lista= museo[articulo]
+        y= int(input('Indique el temaño de la muestra'))
 
-        print("Artistas ordenados cronológicamente:")
+        if int(y)<=lt.size(museo[articulo]):
+            lista_cortada= controller.cortarLista(lista, y)
+            x= input('Diga que tipo de ordenamiento iterativo desea, entre Insertion, Shell, Merge y Quick')
+            fechai= input('Inserte el año inicial en el formato AAAA')
+            fechaf= input('Inserte el año final en el formato AAAA')
+            start_time = time.process_time()
+        
+            if x=='Insertion':
+                museo= museoArrayList()
+                z= controller.sortArrayListArtistInsertion(lista_cortada)
+            elif x=='Shell':
+                z= controller.sortArrayListArtistShell(lista_cortada)
+
+            elif x== 'Merge':
+                z= controller.sortArrayListArtistMerge(lista_cortada)
+
+            elif x== 'Quick':
+                z= controller.sortArrayListArtistQuick(lista_cortada)
+            
+
+            lista_final= controller.fechasRangoArtist(z[0], fechai, fechaf)
+            stop_time = time.process_time()
+            elapsed_time_mseg = (stop_time - start_time)*1000
+            ultimas=controller.darUltimosArtistas(lista_final)
+            primeras=controller.darPrimerosArtistas(lista_final)
+            print(ultimas)
+            print(primeras)
+
+            print("Artistas nacidos en el rango de fechas:"+ str(lt.size(lista_final)))
+            print('Primeros tres artistas:')
+            imprimirDatosArtista(primeras)
+            print('Ultimos tres artistas: ') 
+            imprimirDatosArtista(ultimas)
+            print('El ordenamiento tomo'+ elapsed_time_mseg+ 'tiempo en mseg')
+        else: 
+            print("El tamaño de la muestra pedido supera la cantidad de datos  cargados")
+
 
     elif int(inputs[0]) == 3:
         articulo= 'obras'
@@ -99,6 +148,7 @@ while True:
             x= input('Diga que tipo de ordenamiento iterativo desea, entre Insertion, Shell, Merge y Quick')
             fechai= input('Inserte la fecha inicial en el formato AAAA-MM-DD')
             fechaf= input('Inserte la fecha final en el formato AAAA-MM-DD')
+            start_time = time.process_time()
         
             if x=='Insertion':
                 museo= museoArrayList()
@@ -111,7 +161,10 @@ while True:
 
             elif x== 'Quick':
                 z= controller.sortArrayListQuick(lista_cortada)
-            lista_final= controller.fechasRango(z, fechai, fechaf)
+
+            lista_final= controller.fechasRango(z[0], fechai, fechaf)
+            stop_time = time.process_time()
+            elapsed_time_mseg = (stop_time - start_time)*1000
             ultimas=controller.darUltimasObras(lista_final)
             primeras=controller.darPrimerasObras(lista_final)
             print(ultimas)
@@ -119,12 +172,14 @@ while True:
 
             print("Aquisiciones en el rango de fechas:"+ str(lt.size(lista_final)))
             print("Obras adquiridas por compra: " + str(controller.obrasPurchase(lista_final)))
-            print('Ultimas tres obras: ') 
-            imprimirDatosObra(ultimas)
             print('Primeras tres obras:')
-            imprimirDatosObra(primeras)
+            imprimirDatosArtista(primeras)
+            print('Ultimas tres obras: ') 
+            imprimirDatosArtista(ultimas)
+            print('El ordenamiento tomo'+ elapsed_time_mseg+ 'tiempo en mseg')
+            
         else: 
-            print("El tamaño de la muestra pedido supera la cantidad de datos  cargados")
+            print("El tamaño de la muestra pedido supera la cantidad de datos cargados")
     
 
     elif int(inputs[0]) == 4:

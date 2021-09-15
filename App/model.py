@@ -26,6 +26,7 @@
 
 import config as cf
 import datetime as dt
+import time
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
@@ -168,38 +169,44 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
         return True
     else: 
         return False
+def cmpArtistByDateBirth(artista1, artista2):
+    """Devuelve True si la DateAquired de artwork1 es menor que la de artwork2
+    artwork: Información de la primera obra que incluye su"""
+    a= artista1['BeginDate']
+    b= artista2['BeginDate']
+    x= int(a)
+    y= int(b)
+    if x<y:
+        return True
+    else: 
+        return False
 
-# Funciones de ordenamiento
+# Funciones de ordenamiento obras
 def sortArrayListInsertion(lista):
     size = lt.size(lista) 
     pos1=1
+    start_time = time.process_time()
     while pos1<= size:
         pos2=pos1
         while (pos2 >1) and cmpArtworkByDateAcquired(lt.getElement(lista, pos2),lt.getElement(lista, pos2-1)):
             lt.exchange (lista, pos2, pos2-1)
             pos2 -= 1
         pos1+=1
-    return lista
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+
+    return lista, elapsed_time_mseg
 
 def sortArrayListShell(lista):
+    start_time = time.process_time()
     sa.sort(lista,cmpArtworkByDateAcquired)
-    return lista
-
-def sortArrayListShell2(lista):
-    n = lt.size(lista)
-    h = 1
-    while h < (n//3): 
-        h = 3*h + 1 
-    while (h >= 1):
-        for i in range (1+h, n+1): 
-            j = i
-            while (j>=h) and cmpArtworkByDateAcquired(lt.getElement(lista, j+1),lt.getElement(lista, j-h+1)):
-                lt.exchange (lista, j+1, j-h+1)
-                j -= h
-        h //= 3
-    return lista   
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return lista, elapsed_time_mseg
+ 
 
 def sortArrayListMerge(lista):
+    start_time = time.process_time()
     size = lt.size(lista)
     if size > 1:
         mid = (size // 2)
@@ -240,7 +247,9 @@ def sortArrayListMerge(lista):
             lt.changeInfo(lista, k, lt.getElement(rightlist, j))
             j += 1
             k += 1
-    return lista
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return lista, elapsed_time_mseg
 
 def partition(lista, lo, hi):
     """
@@ -273,8 +282,11 @@ def quicksort(lista, lo, hi):
 
 
 def sortArrayListQuick(lista):
+    start_time = time.process_time()
     quicksort(lista, 1, lt.size(lista))
-    return lista
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return lista, elapsed_time_mseg
 
 def fechasRango(lista, fechai, fechaf):
     
@@ -288,9 +300,115 @@ def fechasRango(lista, fechai, fechaf):
             lt.addLast(listaf, obra)
     return listaf
 
-        
 
-       
+
+ # Funciones de ordenamiento artistas   
+ 
+def sortArrayListArtistInsertion(lista):
+    size = lt.size(lista) 
+    pos1=1
+    while pos1<= size:
+        pos2=pos1
+        while (pos2 >1) and cmpArtistByDateBirth(lt.getElement(lista, pos2),lt.getElement(lista, pos2-1)):
+            lt.exchange (lista, pos2, pos2-1)
+            pos2 -= 1
+        pos1+=1
+    return lista
+
+def sortArrayListArtistShell(lista):
+    sa.sort(lista,cmpArtistByDateBirth)
+    return lista
+ 
+
+def sortArrayListArtistMerge(lista):
+    size = lt.size(lista)
+    if size > 1:
+        mid = (size // 2)
+        """se divide la lista original, en dos partes, izquierda y derecha,
+        desde el punto mid."""
+        leftlist = lt.subList(lista, 1, mid)
+        rightlist = lt.subList(lista, mid+1, size - mid)
+
+        """se hace el llamado recursivo con la lista izquierda y derecha"""
+        sortArrayListArtistMerge(leftlist)
+        sortArrayListArtistMerge(rightlist)
+
+        """i recorre la lista izquierda, j la derecha y k la lista original"""
+        i = j = k = 1
+
+        leftelements = lt.size(leftlist)
+        rightelements = lt.size(rightlist)
+
+        while (i <= leftelements) and (j <= rightelements):
+            elemi = lt.getElement(leftlist, i)
+            elemj = lt.getElement(rightlist, j)
+            """compara y ordena los elementos"""
+            if cmpArtistByDateBirth(elemj, elemi):  
+                lt.changeInfo(lista, k, elemj)
+                j += 1
+            else:                           
+                lt.changeInfo(lista, k, elemi)
+                i += 1
+            k += 1
+
+        """Agrega los elementos que no se comprararon y estan ordenados"""
+        while i <= leftelements:
+            lt.changeInfo(lista, k, lt.getElement(leftlist, i))
+            i += 1
+            k += 1
+
+        while j <= rightelements:
+            lt.changeInfo(lista, k, lt.getElement(rightlist, j))
+            j += 1
+            k += 1
+    return lista
+
+def partitionArtist(lista, lo, hi):
+    """
+    Función que va dejando el pivot en su lugar, mientras mueve
+    elementos menores a la izquierda del pivot y elementos mayores a
+    la derecha del pivot
+    """
+    follower = leader = lo
+    while leader < hi:
+        if cmpArtistByDateBirth(
+           lt.getElement(lista, leader), lt.getElement(lista, hi)):
+            lt.exchange(lista, follower, leader)
+            follower += 1
+        leader += 1
+    lt.exchange(lista, follower, hi)
+    return follower
+
+
+def quicksortArtist(lista, lo, hi):
+    """
+    Se localiza el pivot, utilizando la funcion de particion.
+    Luego se hace la recursión con los elementos a la izquierda del pivot
+    y los elementos a la derecha del pivot
+    """
+    if (lo >= hi):
+        return
+    pivot = partitionArtist(lista, lo, hi)
+    quicksortArtist(lista, lo, pivot-1)
+    quicksortArtist(lista, pivot+1, hi)
+
+
+def sortArrayListArtistQuick(lista):
+    quicksortArtist(lista, 1, lt.size(lista))
+    return lista
+
+def fechasRangoArtista(lista, fechai, fechaf):
+    
+    listaf=lt.newList('ARRAY_LIST')
+    a= int(fechai)
+    b= int(fechaf)
+    for artist in lista['elements']:
+        x=artist['BeginDate']
+        c= int(x)
+        if c<b and c>a:
+            lt.addLast(listaf, artist)
+    return listaf
+
 
 
 # Funciones para agregar informacion al catalogo

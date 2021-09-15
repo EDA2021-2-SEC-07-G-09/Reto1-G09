@@ -84,15 +84,30 @@ def sortArrayListMerge(lista):
 def sortArrayListQuick(lista):
     ordenada= model.sortArrayListQuick(lista)
     return ordenada
-def cmpArtworkByDateAcquired(artwork1, artwork2):
-    """Devuelve True si la DateAquired de artwork1 es menor que la de artwork2
-    artwork: Información de la primera obra que incluye su"""
-    resultado= model.cmpArtworkByDateAcquired(artwork1, artwork2)
-    return resultado
+
 def fechasRango(lista, fechai, fechaf):
     listaf= model.fechasRango(lista,fechai,fechaf)
     return listaf
 
+def sortArrayListArtistInsertion(lista):
+    ordenada= model.sortArrayListArtistInsertion(lista)
+    return ordenada
+
+def sortArrayListArtistShell(lista):
+    ordenada= model.sortArrayListArtistShell(lista)
+    return ordenada
+
+def sortArrayListArtistMerge(lista):
+    ordenada= model.sortArrayListArtistMerge(lista)
+    return ordenada
+
+def sortArrayListArtistQuick(lista):
+    ordenada= model.sortArrayListArtistQuick(lista)
+    return ordenada
+
+def fechasRangoArtist(lista, fechai, fechaf):
+    listaf= model.fechasRangoArtista(lista,fechai,fechaf)
+    return listaf
 # Funciones de consulta sobre el catálogo
 
 def darUltimosArtistas(museo):
@@ -101,8 +116,8 @@ def darUltimosArtistas(museo):
 def darUltimasObras(museo):
     ultimos=model.darUltimasObras(museo)
     return ultimos
-def darPrimerossArtistas(museo):
-    ultimos=model.darUltimosArtistas(museo)
+def darPrimerosArtistas(museo):
+    ultimos=model.darPrimerosArtistas(museo)
     return ultimos
 def darPrimerasObras(museo):
     ultimos=model.darPrimerasObras(museo)
