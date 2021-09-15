@@ -27,7 +27,8 @@ import time
 from DISClib.ADT import list as lt
 assert cf
 
-
+default_limit=1000
+sys.setrecursionlimit(default_limit*10)
 """
 La vista se encarga de la interacción con el usuario
 Presenta el menu de opciones y por cada seleccion
@@ -120,7 +121,7 @@ while True:
                 z= controller.sortArrayListArtistQuick(lista_cortada)
             
 
-            lista_final= controller.fechasRangoArtist(z[0], fechai, fechaf)
+            lista_final= controller.fechasRangoArtist(z, fechai, fechaf)
             stop_time = time.process_time()
             elapsed_time_mseg = (stop_time - start_time)*1000
             ultimas=controller.darUltimosArtistas(lista_final)
@@ -133,7 +134,7 @@ while True:
             imprimirDatosArtista(primeras)
             print('Ultimos tres artistas: ') 
             imprimirDatosArtista(ultimas)
-            print('El ordenamiento tomo'+ elapsed_time_mseg+ 'tiempo en mseg')
+            print('El ordenamiento tomo  '+ str(elapsed_time_mseg)+ '  tiempo en mseg')
         else: 
             print("El tamaño de la muestra pedido supera la cantidad de datos  cargados")
 
@@ -162,21 +163,19 @@ while True:
             elif x== 'Quick':
                 z= controller.sortArrayListQuick(lista_cortada)
 
-            lista_final= controller.fechasRango(z[0], fechai, fechaf)
+            lista_final= controller.fechasRango(z, fechai, fechaf)
             stop_time = time.process_time()
             elapsed_time_mseg = (stop_time - start_time)*1000
             ultimas=controller.darUltimasObras(lista_final)
             primeras=controller.darPrimerasObras(lista_final)
-            print(ultimas)
-            print(primeras)
 
             print("Aquisiciones en el rango de fechas:"+ str(lt.size(lista_final)))
             print("Obras adquiridas por compra: " + str(controller.obrasPurchase(lista_final)))
             print('Primeras tres obras:')
-            imprimirDatosArtista(primeras)
+            imprimirDatosObra(primeras)
             print('Ultimas tres obras: ') 
-            imprimirDatosArtista(ultimas)
-            print('El ordenamiento tomo'+ elapsed_time_mseg+ 'tiempo en mseg')
+            imprimirDatosObra(ultimas)
+            print('El ordenamiento tomo'+ str(elapsed_time_mseg)+ 'tiempo en mseg')
             
         else: 
             print("El tamaño de la muestra pedido supera la cantidad de datos cargados")

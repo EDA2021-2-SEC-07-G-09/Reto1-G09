@@ -163,11 +163,15 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
     artwork: Información de la primera obra que incluye su"""
     a= artwork1['DateAcquired']
     b= artwork2['DateAcquired']
-    x= dt.datetime.strptime(a, '%Y-%m-%d')
-    y= dt.datetime.strptime(b, '%Y-%m-%d')
-    if x<y:
-        return True
-    else: 
+    try:
+        if a !='' and b!='':
+            x= dt.datetime.strptime(a, '%Y-%m-%d')
+            y= dt.datetime.strptime(b, '%Y-%m-%d')
+            if x<y:
+                return True
+        else: 
+            return False
+    except ValueError:
         return False
 def cmpArtistByDateBirth(artista1, artista2):
     """Devuelve True si la DateAquired de artwork1 es menor que la de artwork2
@@ -282,22 +286,24 @@ def quicksort(lista, lo, hi):
 
 
 def sortArrayListQuick(lista):
-    start_time = time.process_time()
     quicksort(lista, 1, lt.size(lista))
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return lista, elapsed_time_mseg
+    return lista
 
 def fechasRango(lista, fechai, fechaf):
     
     listaf=lt.newList('ARRAY_LIST')
     a= dt.datetime.strptime(fechai, '%Y-%m-%d')
     b= dt.datetime.strptime(fechaf, '%Y-%m-%d')
-    for obra in lista['elements']:
-        x=obra['DateAcquired']
-        c= dt.datetime.strptime(x, '%Y-%m-%d')
-        if c<b and c>a:
-            lt.addLast(listaf, obra)
+    i=0
+    while i in range(0, lt.size(lista)):
+
+        try:
+            obra = lt.getElement(lista,i)
+            c= dt.datetime.strptime(obra['DateAcquired'], '%Y-%m-%d')
+            if c<b and c>a:
+                lt.addLast(listaf, obra)
+        except ValueError:
+             pass
     return listaf
 
 
