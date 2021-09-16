@@ -294,8 +294,10 @@ def fechasRango(lista, fechai, fechaf):
             c= dt.datetime.strptime(obra['DateAcquired'], '%Y-%m-%d')
             if c<b and c>a:
                 lt.addLast(listaf, obra)
+            
         except ValueError:
              pass
+        i+=1
     return listaf
 
 
