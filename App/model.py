@@ -189,28 +189,21 @@ def cmpArtistByDateBirth(artista1, artista2):
 def sortArrayListInsertion(lista):
     size = lt.size(lista) 
     pos1=1
-    start_time = time.process_time()
     while pos1<= size:
         pos2=pos1
         while (pos2 >1) and cmpArtworkByDateAcquired(lt.getElement(lista, pos2),lt.getElement(lista, pos2-1)):
             lt.exchange (lista, pos2, pos2-1)
             pos2 -= 1
         pos1+=1
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
 
-    return lista, elapsed_time_mseg
+    return lista
 
 def sortArrayListShell(lista):
-    start_time = time.process_time()
     sa.sort(lista,cmpArtworkByDateAcquired)
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return lista, elapsed_time_mseg
+    return lista
  
 
 def sortArrayListMerge(lista):
-    start_time = time.process_time()
     size = lt.size(lista)
     if size > 1:
         mid = (size // 2)
@@ -251,9 +244,8 @@ def sortArrayListMerge(lista):
             lt.changeInfo(lista, k, lt.getElement(rightlist, j))
             j += 1
             k += 1
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return lista, elapsed_time_mseg
+    
+    return lista
 
 def partition(lista, lo, hi):
     """
