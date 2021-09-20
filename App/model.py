@@ -24,7 +24,6 @@
  """
 
 
-from DISClib.DataStructures.arraylist import addLast
 import config as cf
 import datetime as dt
 import time
@@ -138,14 +137,16 @@ def cortarLista(lista, muestra):
     lista_cortada= lt.subList(lista, 0, muestra)
     return lista_cortada
 #Requisito3
+
 def artistaID(museo, nombre):
     lista= museo['artistas']
     size= lt.size(lista)
     i=0
     while i<size:
-        if nombre==lista[i]['DisplayName']:
-            id= lista[i]['ConstituentID']
+        if nombre==lista['elements'][i]['DisplayName']:
+            id= lista['elements'][i]['ConstituentID']
         i+=1
+         
     return id
 def obrasID(museo, id):
     lista= museo['obras']
@@ -154,7 +155,7 @@ def obrasID(museo, id):
     i=0
     while i<size:
         try:
-            if lista[i]['ConstituentID']==id:
+            if lista['elements'][i]['ConstituentID']==id:
                 lt.addLast(listaf, lista[i])
             i+=1
         except ValueError:
@@ -201,14 +202,14 @@ def contarTecnicas(tecnicas):
 def tecnicaMasFrecuente(listaT):
     i=0
     size=lt.size(listaT)
+    tecnica=' '
+    tupla=''
     while i<size:
         valorMayor=0
-        tecnica=''
-        tupla=''
         if listaT[i][1]>valorMayor:
             valorMayor=listaT[i][1]
             tecnica=listaT[i][0]
-            tupla=(listaT[i][0], listaT[i][1])
+            tupla=tecnica, listaT[i][1]
         i+=1
     return tupla
 

@@ -70,8 +70,8 @@ def imprimirDatosArtista(artistas):
         'Genero': artista['Gender']}
         print(x)
 def imprimirDatosObra2(obras):
-    for obra in obras:
-        x={'Title':obra['Title'],
+    for obra in obras['elements']:
+        x={'Title': obra['Title'],
         'Date':obra['Date'],
         'Medium': obra['Medium'],
         'Dimensions': obra['Dimensions']}
@@ -168,8 +168,8 @@ while True:
 
         print('Hay'+str(numero)+'obras del artista'+nombre)
         print('El artista usa'+str(lt.size(tecnicas))+'tecnicas')
-        print('La tecnica mas utilizada es:'+ tecnicaMasFrecuente[1])
-        print('Las obras que utilizan'+ tecnicaMasFrecuente[1] +'son:')
+        print('La tecnica mas utilizada es:'+ str(tecnicaMasFrecuente))
+        print('Las obras que utilizan'+ str(tecnicaMasFrecuente) +'son:')
         imprimirDatosObra2(obrasTecnica)
 
 
