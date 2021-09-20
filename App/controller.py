@@ -36,9 +36,6 @@ def inicatalogArrayList():
     catalog = model.museoArrayList()
     return catalog
 
-def inicatalogLinkedList():
-    catalog = model.museoLinkedList()
-    return catalog
 
 def cargarDatos(museo):
     cargarArtistas(museo)
@@ -69,45 +66,43 @@ def cargarObras(museo):
         model.addObra(museo, obra)
 # Funciones de ordenamiento
 
-def sortArrayListInsertion(lista):
-    ordenada= model.sortArrayListInsertion(lista)
-    return ordenada
-
-def sortArrayListShell(lista):
-    ordenada= model.sortArrayListShell(lista)
-    return ordenada
-
 def sortArrayListMerge(lista):
     ordenada= model.sortArrayListMerge(lista)
-    return ordenada
-
-def sortArrayListQuick(lista):
-    ordenada= model.sortArrayListQuick(lista)
     return ordenada
 
 def fechasRango(lista, fechai, fechaf):
     listaf= model.fechasRango(lista,fechai,fechaf)
     return listaf
 
-def sortArrayListArtistInsertion(lista):
-    ordenada= model.sortArrayListArtistInsertion(lista)
-    return ordenada
-
-def sortArrayListArtistShell(lista):
-    ordenada= model.sortArrayListArtistShell(lista)
-    return ordenada
-
 def sortArrayListArtistMerge(lista):
     ordenada= model.sortArrayListArtistMerge(lista)
     return ordenada
 
-def sortArrayListArtistQuick(lista):
-    ordenada= model.sortArrayListArtistQuick(lista)
-    return ordenada
 
 def fechasRangoArtist(lista, fechai, fechaf):
     listaf= model.fechasRangoArtista(lista,fechai,fechaf)
     return listaf
+#requisito 3
+def artistaID(museo, nombre):
+    id=model.artistaID(museo, nombre)
+    return id
+def obrasID(museo, id):
+    obras= model.obrasID(museo, id)
+    return obras
+    
+def listarTecnicas(lista):
+    tecnicas= model.listarTecnicas(lista)
+    return tecnicas
+def contarTecnicas(tecnicas):
+    listaT= model.contarTecnicas(tecnicas)
+    return listaT
+def tecnicaMasFrecuente(listaT):
+    tupla=model.tecnicaMasFrecuente(listaT)
+    return tupla
+def clasificarObrasPorTecnica(listaf, tecnica):
+    obrasTecnica=model.clasificarObrasPorTecnica(listaf,tecnica)
+    return obrasTecnica
+
 # Funciones de consulta sobre el catálogo
 
 def darUltimosArtistas(museo):

@@ -24,6 +24,7 @@
  """
 
 
+from DISClib.DataStructures.arraylist import addLast
 import config as cf
 import datetime as dt
 import time
@@ -53,24 +54,6 @@ def museoArrayList():
 
     museo['artistas'] = lt.newList('ARRAY_LIST')
     museo['obras'] = lt.newList('ARRAY_LIST')                     
-    return (museo)
-
-def museoLinkedList():
-    """
-    Inicializa el catálogo de libros. Crea una lista vacia para guardar
-    todos los libros, adicionalmente, crea una lista vacia para los autores,
-    una lista vacia para los generos y una lista vacia para la asociación
-    generos y libros. Retorna el catalogo inicializado.
-    """
-    
-
-    museo= {'artistas': None,
-            'obras': None}
-
-    
-
-    museo['artistas'] = lt.newList('LINKED_LIST')
-    museo['obras'] = lt.newList('LINKED_LIST')                          
     return (museo)
 
 
@@ -154,7 +137,105 @@ def obrasPurchase(obras):
 def cortarLista(lista, muestra):
     lista_cortada= lt.subList(lista, 0, muestra)
     return lista_cortada
+#Requisito3
+def artistaID(museo, nombre):
+    lista= museo['artistas']
+    size= lt.size(lista)
+    i=0
+    while i<size:
+        if nombre==lista[i]['DisplayName']:
+            id= lista[i]['ConstituentID']
+        i+=1
+    return id
+def obrasID(museo, id):
+    lista= museo['obras']
+    size=lt.size(lista)
+    listaf=lt.newList('ARRAY_LIST')
+    i=0
+    while i<size:
+        try:
+            if lista[i]['ConstituentID']==id:
+                lt.addLast(listaf, lista[i])
+            i+=1
+        except ValueError:
+            pass
+    return listaf
+def clasificarObrasPorTecnica(listaf, tecnica):
+    i=0
+    size=lt.size(listaf)
+    obrasTecnica= lt.newList('ARRAY_LIST')
+    while i<size:
+        if listaf[i]['Medium']==tecnica:
+            lt.addLast(obrasTecnica, listaf[i])
+        i+=1
+    return obrasTecnica
+
+
+def listarTecnicas(listaf):
+    tecnicas=lt.newList('ARRAY_LIST')
+    i=0
+    size=lt.size(listaf)
+    while i<size:
+        try:
+            a= listaf[i]['Medium']
+            lt.addLast(tecnicas, a)
+        except ValueError:
+            pass
+    return tecnicas
+def contarTecnicas(tecnicas):
+    i=0
+    size=lt.size(tecnicas)
+    veces=0
+    listaT=lt.newList('ARRAY_LIST')
+    while i<size:
+        j=0
+        tecnica= tecnicas[i]
+        numeroTecnica=0
+        while j<size:
+            if tecnica==tecnica[j]:
+                numeroTecnica+=1
+            j+=1
+        tuplaT=(tecnica, numeroTecnica)
+        lt.addLast(listaT, tuplaT)
+    return listaT
+def tecnicaMasFrecuente(listaT):
+    i=0
+    size=lt.size(listaT)
+    while i<size:
+        valorMayor=0
+        tecnica=''
+        tupla=''
+        if listaT[i][1]>valorMayor:
+            valorMayor=listaT[i][1]
+            tecnica=listaT[i][0]
+            tupla=(listaT[i][0], listaT[i][1])
+        i+=1
+    return tupla
+
+
+
+
+
+
+
+def fechasRango(lista, fechai, fechaf):
     
+    listaf=lt.newList('ARRAY_LIST')
+    a= dt.datetime.strptime(fechai, '%Y-%m-%d')
+    b= dt.datetime.strptime(fechaf, '%Y-%m-%d')
+    i=0
+    while i in range(0, lt.size(lista)):
+
+        try:
+            obra = lt.getElement(lista,i)
+            c= dt.datetime.strptime(obra['DateAcquired'], '%Y-%m-%d')
+            if c<b and c>a:
+                lt.addLast(listaf, obra)
+            
+        except ValueError:
+             pass
+        i+=1
+    return listaf 
 
 
 # Funciones utilizadas para comparar elementos dentro de una lista
@@ -186,22 +267,8 @@ def cmpArtistByDateBirth(artista1, artista2):
         return False
 
 # Funciones de ordenamiento obras
-def sortArrayListInsertion(lista):
-    size = lt.size(lista) 
-    pos1=1
-    while pos1<= size:
-        pos2=pos1
-        while (pos2 >1) and cmpArtworkByDateAcquired(lt.getElement(lista, pos2),lt.getElement(lista, pos2-1)):
-            lt.exchange (lista, pos2, pos2-1)
-            pos2 -= 1
-        pos1+=1
 
-    return lista
 
-def sortArrayListShell(lista):
-    sa.sort(lista,cmpArtworkByDateAcquired)
-    return lista
- 
 
 def sortArrayListMerge(lista):
     size = lt.size(lista)
@@ -247,39 +314,6 @@ def sortArrayListMerge(lista):
     
     return lista
 
-def partition(lista, lo, hi):
-    """
-    Función que va dejando el pivot en su lugar, mientras mueve
-    elementos menores a la izquierda del pivot y elementos mayores a
-    la derecha del pivot
-    """
-    follower = leader = lo
-    while leader < hi:
-        if cmpArtworkByDateAcquired(
-           lt.getElement(lista, leader), lt.getElement(lista, hi)):
-            lt.exchange(lista, follower, leader)
-            follower += 1
-        leader += 1
-    lt.exchange(lista, follower, hi)
-    return follower
-
-
-def quicksort(lista, lo, hi):
-    """
-    Se localiza el pivot, utilizando la funcion de particion.
-    Luego se hace la recursión con los elementos a la izquierda del pivot
-    y los elementos a la derecha del pivot
-    """
-    if (lo >= hi):
-        return
-    pivot = partition(lista, lo, hi)
-    quicksort(lista, lo, pivot-1)
-    quicksort(lista, pivot+1, hi)
-
-
-def sortArrayListQuick(lista):
-    quicksort(lista, 1, lt.size(lista))
-    return lista
 
 def fechasRango(lista, fechai, fechaf):
     
@@ -303,22 +337,7 @@ def fechasRango(lista, fechai, fechaf):
 
 
  # Funciones de ordenamiento artistas   
- 
-def sortArrayListArtistInsertion(lista):
-    size = lt.size(lista) 
-    pos1=1
-    while pos1<= size:
-        pos2=pos1
-        while (pos2 >1) and cmpArtistByDateBirth(lt.getElement(lista, pos2),lt.getElement(lista, pos2-1)):
-            lt.exchange (lista, pos2, pos2-1)
-            pos2 -= 1
-        pos1+=1
-    return lista
 
-def sortArrayListArtistShell(lista):
-    sa.sort(lista,cmpArtistByDateBirth)
-    return lista
- 
 
 def sortArrayListArtistMerge(lista):
     size = lt.size(lista)
@@ -361,40 +380,6 @@ def sortArrayListArtistMerge(lista):
             lt.changeInfo(lista, k, lt.getElement(rightlist, j))
             j += 1
             k += 1
-    return lista
-
-def partitionArtist(lista, lo, hi):
-    """
-    Función que va dejando el pivot en su lugar, mientras mueve
-    elementos menores a la izquierda del pivot y elementos mayores a
-    la derecha del pivot
-    """
-    follower = leader = lo
-    while leader < hi:
-        if cmpArtistByDateBirth(
-           lt.getElement(lista, leader), lt.getElement(lista, hi)):
-            lt.exchange(lista, follower, leader)
-            follower += 1
-        leader += 1
-    lt.exchange(lista, follower, hi)
-    return follower
-
-
-def quicksortArtist(lista, lo, hi):
-    """
-    Se localiza el pivot, utilizando la funcion de particion.
-    Luego se hace la recursión con los elementos a la izquierda del pivot
-    y los elementos a la derecha del pivot
-    """
-    if (lo >= hi):
-        return
-    pivot = partitionArtist(lista, lo, hi)
-    quicksortArtist(lista, lo, pivot-1)
-    quicksortArtist(lista, pivot+1, hi)
-
-
-def sortArrayListArtistQuick(lista):
-    quicksortArtist(lista, 1, lt.size(lista))
     return lista
 
 def fechasRangoArtista(lista, fechai, fechaf):

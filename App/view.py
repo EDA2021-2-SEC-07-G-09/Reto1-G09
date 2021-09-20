@@ -49,8 +49,7 @@ def printMenu():
 
 
 
-def museoLinkedList():
-    return controller.inicatalogLinkedList()
+
 def museoArrayList():
     return controller.inicatalogArrayList()
 def cargarDatos(museo):
@@ -70,7 +69,13 @@ def imprimirDatosArtista(artistas):
         'Nacionalidad': artista['Nationality'],
         'Genero': artista['Gender']}
         print(x)
-
+def imprimirDatosObra2(obras):
+    for obra in obras:
+        x={'Title':obra['Title'],
+        'Date':obra['Date'],
+        'Medium': obra['Medium'],
+        'Dimensions': obra['Dimensions']}
+        print(x)
 
 
 """
@@ -78,16 +83,11 @@ Menu principal
 """
 while True:
     printMenu()
-    inputs = input('Seleccione una opción para continuar\n')
+    inputs = input('Seleccione una opción para continuar')
     if int(inputs[0]) == 1:
-        x= input('Diga que tipo de lista necesita entre ARRAY_LIST y LINKED_LIST')
         print("Cargando información de los archivos ....")
-        if x== 'LINKED_LIST':
-            museo= museoLinkedList()
-            cargarDatos(museo)
-        elif x== 'ARRAY_LIST':
-            museo= museoArrayList()
-            cargarDatos(museo)
+        museo= museoArrayList()
+        cargarDatos(museo)
         
         print('Informacion de artistas cargados' + str(lt.size(museo['artistas'])))
         print('Información de las obras cargadas'+ str(lt.size(museo['artistas'])) )
@@ -103,23 +103,10 @@ while True:
 
         if int(y)<=lt.size(museo[articulo]):
             lista_cortada= controller.cortarLista(lista, y)
-            x= input('Diga que tipo de ordenamiento iterativo desea, entre Insertion, Shell, Merge y Quick')
             fechai= input('Inserte el año inicial en el formato AAAA')
             fechaf= input('Inserte el año final en el formato AAAA')
             start_time = time.process_time()
-        
-            if x=='Insertion':
-                museo= museoArrayList()
-                z= controller.sortArrayListArtistInsertion(lista_cortada)
-            elif x=='Shell':
-                z= controller.sortArrayListArtistShell(lista_cortada)
-
-            elif x== 'Merge':
-                z= controller.sortArrayListArtistMerge(lista_cortada)
-
-            elif x== 'Quick':
-                z= controller.sortArrayListArtistQuick(lista_cortada)
-            
+            z= controller.sortArrayListArtistMerge(lista_cortada)
 
             lista_final= controller.fechasRangoArtist(z, fechai, fechaf)
             stop_time = time.process_time()
@@ -146,22 +133,10 @@ while True:
 
         if int(y)<=lt.size(museo['obras']):
             lista_cortada= controller.cortarLista(lista, y)
-            x= input('Diga que tipo de ordenamiento iterativo desea, entre Insertion, Shell, Merge y Quick')
             fechai= input('Inserte la fecha inicial en el formato AAAA-MM-DD')
             fechaf= input('Inserte la fecha final en el formato AAAA-MM-DD')
             start_time = time.process_time()
-        
-            if x=='Insertion':
-                museo= museoArrayList()
-                z= controller.sortArrayListInsertion(lista_cortada)
-            elif x=='Shell':
-                z= controller.sortArrayListShell(lista_cortada)
-
-            elif x== 'Merge':
-                z= controller.sortArrayListMerge(lista_cortada)
-
-            elif x== 'Quick':
-                z= controller.sortArrayListQuick(lista_cortada)
+            z= controller.sortArrayListMerge(lista_cortada)
 
             lista_final= controller.fechasRango(z, fechai, fechaf)
             stop_time = time.process_time()
@@ -182,7 +157,21 @@ while True:
     
 
     elif int(inputs[0]) == 4:
-        print("Obras de un artista ordenadas por técnica:")
+        nombre= input('Ingrese el nombre del artista que desea consultar')
+
+        id= controller.artistaID(museo, nombre)
+        obras= controller.obrasID(museo, id)
+        numero= lt.size(obras)
+        tecnicas=controller.listarTecnicas(obras)
+        tecnicaMasFrecuente=controller.tecnicaMasFrecuente(tecnicas)
+        obrasTecnica= controller.clasificarObrasPorTecnica(obras, tecnicaMasFrecuente)
+
+        print('Hay'+str(numero)+'obras del artista'+nombre)
+        print('El artista usa'+str(lt.size(tecnicas))+'tecnicas')
+        print('La tecnica mas utilizada es:'+ tecnicaMasFrecuente[1])
+        print('Las obras que utilizan'+ tecnicaMasFrecuente[1] +'son:')
+        imprimirDatosObra2(obrasTecnica)
+
 
     elif int(inputs[0]) == 5:
         print("Obras clasificadas por la nacionalidad de su creado:")
