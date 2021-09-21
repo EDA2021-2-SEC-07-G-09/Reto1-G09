@@ -102,21 +102,21 @@ def addObra(museo, obra):
 # Funciones de consulta
 def darUltimosArtistas(museo):
     b= lt.size(museo)
-    listaUltimos= lt.subList(museo, (b-3),3)
+    listaUltimos= lt.subList(museo, (b-2),3)
     return listaUltimos
 
 def darUltimasObras(museo):
     b= lt.size(museo)
-    listaUltimos= lt.subList(museo, (b-3),3)
+    listaUltimos= lt.subList(museo, (b-2),3)
     return listaUltimos
 
 def darPrimerosArtistas(museo):
-    listaUltimos= lt.subList(museo, 0,3)
+    listaUltimos= lt.subList(museo, 1,3)
     return listaUltimos
 
 def darPrimerasObras(museo):
 
-    listaUltimos= lt.subList(museo, 0,3)
+    listaUltimos= lt.subList(museo, 1,3)
     return listaUltimos
 
 
@@ -136,6 +136,118 @@ def obrasPurchase(obras):
 def cortarLista(lista, muestra):
     lista_cortada= lt.subList(lista, 0, muestra)
     return lista_cortada
+#Requisito 6
+def cmpArtworkByDate(artwork1, artwork2):
+    """Devuelve True si la DateAquired de artwork1 es menor que la de artwork2
+    artwork: Información de la primera obra que incluye su"""
+    a= artwork1['Date']
+    b= artwork2['Date']
+    try:
+        if a !='' and b!='':
+            x= int(a)
+            y= int(b)
+            if x<y:
+                return True
+        else: 
+            return False
+    except ValueError:
+        return False
+def sortArrayListMergeDate(lista):
+    size = lt.size(lista)
+    if size > 1:
+        mid = (size // 2)
+        """se divide la lista original, en dos partes, izquierda y derecha,
+        desde el punto mid."""
+        leftlist = lt.subList(lista, 1, mid)
+        rightlist = lt.subList(lista, mid+1, size - mid)
+
+        """se hace el llamado recursivo con la lista izquierda y derecha"""
+        sortArrayListMergeDate(leftlist)
+        sortArrayListMergeDate(rightlist)
+
+        """i recorre la lista izquierda, j la derecha y k la lista original"""
+        i = j = k = 1
+
+        leftelements = lt.size(leftlist)
+        rightelements = lt.size(rightlist)
+
+        while (i <= leftelements) and (j <= rightelements):
+            elemi = lt.getElement(leftlist, i)
+            elemj = lt.getElement(rightlist, j)
+            """compara y ordena los elementos"""
+            if cmpArtworkByDate(elemj, elemi):  
+                lt.changeInfo(lista, k, elemj)
+                j += 1
+            else:                           
+                lt.changeInfo(lista, k, elemi)
+                i += 1
+            k += 1
+
+        """Agrega los elementos que no se comprararon y estan ordenados"""
+        while i <= leftelements:
+            lt.changeInfo(lista, k, lt.getElement(leftlist, i))
+            i += 1
+            k += 1
+
+        while j <= rightelements:
+            lt.changeInfo(lista, k, lt.getElement(rightlist, j))
+            j += 1
+            k += 1
+    
+    return lista
+
+def fechasRangoObras(lista, fechai, fechaf):
+    size=lt.size(lista)
+    listaf=lt.newList('ARRAY_LIST')
+    a= int(fechai)
+    b= int(fechaf)
+    for i in range(1, size+1):
+        try:
+            obra = lt.getElement(lista,i)
+            c= int(obra['Date'])
+            if c<=b and c>=a:
+                lt.addLast(listaf, obra)
+            
+        except ValueError:
+             pass
+        
+    return listaf
+def metrosObras(area, listaf):
+    size=lt.size(listaf)
+    metrosOcupados=0
+    obras= lt.newList('ARRAY_LIST')
+    retorno=lt.newList('ARRAY_LIST')
+    for i in range(1, size+1):
+        a=lt.getElement(listaf, i)
+        d=a['Diameter (cm)']
+        h=a['Height (cm)']
+        l=a['Length (cm)']
+        depth= a['Depth (cm)']
+        w=a['Width (cm)']
+        area=0
+        if (w==''or w=='0') and (depth=='' or depth=='0') and (d=='' or d=='0') and (h!='' and h!='0') and (l!='' and l!='0') :
+            areaO= float(h)*float(l)
+            areaO=areaO/100
+        if d!='' and d!='0':
+            areaO= 3.1416592*((float(d)/2)**2)
+            areaO= areaO/100
+        if metrosOcupados< area and metrosOcupados+areaO< area:
+            metrosOcupados+=areaO
+            lt.addLast(obras, a)
+    lt.addLast(retorno, obras)
+    lt.addLast(retorno, metrosOcupados)
+    return retorno
+def darUltimasObras5(museo):
+    b= lt.size(museo)
+    listaUltimos= lt.subList(museo, (b-4),5)
+    return listaUltimos
+
+def darPrimerasObras5(museo):
+
+    listaUltimos= lt.subList(museo, 1,5)
+    return listaUltimos
+            
+
 #Requisito3
 
 def artistaID(museo, nombre):
@@ -155,88 +267,65 @@ def obrasID(museo, id):
     i=0
     while i<size:
         try:
-            if lista['elements'][i]['ConstituentID']==id:
-                lt.addLast(listaf, lista[i])
+            a=lt.getElement(lista, i)
+            b=str(a['ConstituentID'])
+            b = b.replace("[", "")
+            b = b.replace("]", "")
+            c=b.split(",")
+            if id in c:
+                lt.addLast(listaf, a)
             i+=1
         except ValueError:
             pass
     return listaf
+
 def clasificarObrasPorTecnica(listaf, tecnica):
-    i=0
+    i=1
     size=lt.size(listaf)
     obrasTecnica= lt.newList('ARRAY_LIST')
-    while i<size:
-        if listaf[i]['Medium']==tecnica:
-            lt.addLast(obrasTecnica, listaf[i])
+    while i<=size:
+        if lt.getElement(listaf,i)['Medium']==tecnica:
+            lt.addLast(obrasTecnica, lt.getElement(listaf,i))
         i+=1
     return obrasTecnica
-
-
+ 
 def listarTecnicas(listaf):
     tecnicas=lt.newList('ARRAY_LIST')
     i=0
     size=lt.size(listaf)
     while i<size:
         try:
-            a= listaf[i]['Medium']
+            a= listaf['elements'][i]['Medium']
             lt.addLast(tecnicas, a)
+            i+=1
         except ValueError:
+            i+=1
             pass
     return tecnicas
+
 def contarTecnicas(tecnicas):
-    i=0
-    size=lt.size(tecnicas)
-    veces=0
-    listaT=lt.newList('ARRAY_LIST')
-    while i<size:
-        j=0
-        tecnica= tecnicas[i]
-        numeroTecnica=0
-        while j<size:
-            if tecnica==tecnica[j]:
-                numeroTecnica+=1
-            j+=1
-        tuplaT=(tecnica, numeroTecnica)
-        lt.addLast(listaT, tuplaT)
-    return listaT
+    duplas = {}
+    for i in range(1, lt.size(tecnicas) + 1):
+        tecnica = lt.getElement(tecnicas, i)
+        if not tecnica in duplas.keys():
+            duplas[tecnica] = 1
+        else:
+            num = duplas[tecnica]
+            duplas[tecnica] = num + 1
+    return duplas
+
 def tecnicaMasFrecuente(listaT):
-    i=0
-    size=lt.size(listaT)
-    tecnica=' '
-    tupla=''
-    while i<size:
-        valorMayor=0
-        if listaT[i][1]>valorMayor:
-            valorMayor=listaT[i][1]
-            tecnica=listaT[i][0]
-            tupla=tecnica, listaT[i][1]
-        i+=1
-    return tupla
+    mayor = 0
+    tecnica = ""
+    for llave in listaT.keys():
+        if listaT[llave] > mayor:
+            mayor = listaT[llave]
+            tecnica = llave
+    retorno = lt.newList('ARRAY_LIST')
+    lt.addLast(retorno, tecnica)
+    lt.addLast(retorno, mayor) 
+    return retorno
 
-
-
-
-
-
-
-def fechasRango(lista, fechai, fechaf):
-    
-    listaf=lt.newList('ARRAY_LIST')
-    a= dt.datetime.strptime(fechai, '%Y-%m-%d')
-    b= dt.datetime.strptime(fechaf, '%Y-%m-%d')
-    i=0
-    while i in range(0, lt.size(lista)):
-
-        try:
-            obra = lt.getElement(lista,i)
-            c= dt.datetime.strptime(obra['DateAcquired'], '%Y-%m-%d')
-            if c<b and c>a:
-                lt.addLast(listaf, obra)
-            
-        except ValueError:
-             pass
-        i+=1
-    return listaf 
 
 
 # Funciones utilizadas para comparar elementos dentro de una lista
@@ -321,20 +410,19 @@ def fechasRango(lista, fechai, fechaf):
     listaf=lt.newList('ARRAY_LIST')
     a= dt.datetime.strptime(fechai, '%Y-%m-%d')
     b= dt.datetime.strptime(fechaf, '%Y-%m-%d')
-    i=0
-    while i in range(0, lt.size(lista)):
-
+    
+    
+    for i in range(1, lt.size(lista)+1):
         try:
             obra = lt.getElement(lista,i)
             c= dt.datetime.strptime(obra['DateAcquired'], '%Y-%m-%d')
-            if c<b and c>a:
+            if c<=b and c>=a:
                 lt.addLast(listaf, obra)
             
         except ValueError:
              pass
-        i+=1
+        
     return listaf
-
 
 
  # Funciones de ordenamiento artistas   
@@ -388,11 +476,12 @@ def fechasRangoArtista(lista, fechai, fechaf):
     listaf=lt.newList('ARRAY_LIST')
     a= int(fechai)
     b= int(fechaf)
-    for artist in lista['elements']:
-        x=artist['BeginDate']
+    for i in range(1,lt.size(lista)+1):
+        artista=lt.getElement(lista, i)
+        x= artista['BeginDate']
         c= int(x)
-        if c<b and c>a:
-            lt.addLast(listaf, artist)
+        if c<=b and c>=a:
+            lt.addLast(listaf, artista)
     return listaf
 
 

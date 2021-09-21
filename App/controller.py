@@ -50,7 +50,7 @@ def cargarArtistas(museo):
     cada uno de ellos, se crea en la lista de autores, a dicho autor y una
     referencia al libro que se esta procesando.
     """
-    booksfile = cf.data_dir + 'Artists-utf8-large.csv'
+    booksfile = cf.data_dir + 'Artists-utf8-small.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for artista in input_file:
         model.addArtista(museo, artista)
@@ -60,7 +60,7 @@ def cargarObras(museo):
     """
     Carga todos los tags del archivo y los agrega a la lista de tags
     """
-    tagsfile = cf.data_dir + 'Artworks-utf8-large.csv'
+    tagsfile = cf.data_dir + 'Artworks-utf8-small.csv'
     input_file = csv.DictReader(open(tagsfile, encoding='utf-8'))
     for obra in input_file:
         model.addObra(museo, obra)
@@ -82,6 +82,27 @@ def sortArrayListArtistMerge(lista):
 def fechasRangoArtist(lista, fechai, fechaf):
     listaf= model.fechasRangoArtista(lista,fechai,fechaf)
     return listaf
+#requisito 6
+def sortArrayListMergeDate(lista):
+    lista=model.sortArrayListMergeDate(lista)
+    return lista
+
+def fechasRangoObras(lista, fechai, fechaf):
+    listaf=model.fechasRangoObras(lista,fechai,fechaf)
+    return listaf
+
+def metrosObras(area, listaf):
+    retorno=model.metrosObras(area, listaf)
+    return retorno
+
+def darUltimasObras5(museo):
+    listaUltimos=model.darUltimasObras5(museo)
+    return listaUltimos
+
+def darPrimerasObras5(museo):
+    listaPrimeros=model.darPrimerasObras5(museo)
+    return listaPrimeros
+            
 #requisito 3
 def artistaID(museo, nombre):
     id=model.artistaID(museo, nombre)
