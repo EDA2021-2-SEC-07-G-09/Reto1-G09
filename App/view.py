@@ -118,8 +118,6 @@ while True:
         elapsed_time_mseg = (stop_time - start_time)*1000
         ultimas=controller.darUltimosArtistas(lista_final)
         primeras=controller.darPrimerosArtistas(lista_final)
-        print(ultimas)
-        print(primeras)
 
         print("Artistas nacidos en el rango de fechas:   "+ str(lt.size(lista_final)))
         print('Primeros tres artistas:  ')
@@ -137,7 +135,6 @@ while True:
         fechaf= input('Inserte la fecha final en el formato AAAA-MM-DD    ')
         start_time = time.process_time()
         z= controller.sortArrayListMerge(lista)
-        print(lt.size(z))
         lista_final= controller.fechasRango(z, fechai, fechaf)
         
         stop_time = time.process_time()

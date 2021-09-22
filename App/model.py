@@ -133,69 +133,8 @@ def obrasPurchase(obras):
         if obra['CreditLine']== 'Purchase':
              numero +=1
     return numero
-def cortarLista(lista, muestra):
-    lista_cortada= lt.subList(lista, 0, muestra)
-    return lista_cortada
+
 #Requisito 6
-def cmpArtworkByDate(artwork1, artwork2):
-    """Devuelve True si la DateAquired de artwork1 es menor que la de artwork2
-    artwork: Información de la primera obra que incluye su"""
-    a= artwork1['Date']
-    b= artwork2['Date']
-    try:
-        if a !='' and b!='':
-            x= int(a)
-            y= int(b)
-            if x<y:
-                return True
-        else: 
-            return False
-    except ValueError:
-        return False
-def sortArrayListMergeDate(lista):
-    size = lt.size(lista)
-    if size > 1:
-        mid = (size // 2)
-        """se divide la lista original, en dos partes, izquierda y derecha,
-        desde el punto mid."""
-        leftlist = lt.subList(lista, 1, mid)
-        rightlist = lt.subList(lista, mid+1, size - mid)
-
-        """se hace el llamado recursivo con la lista izquierda y derecha"""
-        sortArrayListMergeDate(leftlist)
-        sortArrayListMergeDate(rightlist)
-
-        """i recorre la lista izquierda, j la derecha y k la lista original"""
-        i = j = k = 1
-
-        leftelements = lt.size(leftlist)
-        rightelements = lt.size(rightlist)
-
-        while (i <= leftelements) and (j <= rightelements):
-            elemi = lt.getElement(leftlist, i)
-            elemj = lt.getElement(rightlist, j)
-            """compara y ordena los elementos"""
-            if cmpArtworkByDate(elemj, elemi):  
-                lt.changeInfo(lista, k, elemj)
-                j += 1
-            else:                           
-                lt.changeInfo(lista, k, elemi)
-                i += 1
-            k += 1
-
-        """Agrega los elementos que no se comprararon y estan ordenados"""
-        while i <= leftelements:
-            lt.changeInfo(lista, k, lt.getElement(leftlist, i))
-            i += 1
-            k += 1
-
-        while j <= rightelements:
-            lt.changeInfo(lista, k, lt.getElement(rightlist, j))
-            j += 1
-            k += 1
-    
-    return lista
-
 def fechasRangoObras(lista, fechai, fechaf):
     size=lt.size(lista)
     listaf=lt.newList('ARRAY_LIST')
@@ -237,10 +176,7 @@ def metrosObras(area, listaf):
     lt.addLast(retorno, obras)
     lt.addLast(retorno, metrosOcupados)
     return retorno
-def darUltimasObras5(museo):
-    b= lt.size(museo)
-    listaUltimos= lt.subList(museo, (b-4),5)
-    return listaUltimos
+
 
 def darPrimerasObras5(museo):
 
@@ -487,7 +423,176 @@ def fechasRangoArtista(lista, fechai, fechaf):
 
 
 # Funciones para agregar informacion al catalogo
+#Requerimiento 5
+def obraDepartamento(museo, departamento):
+    lista= museo['obras']
+    size=lt.size(lista)
+    listaf= lt.newList('ARRAY_LIST')
+    for i in range(1, size+1):
+        a=lt.getElement(lista, i)
+        if a['Department']==departamento:
+            lt.addLast(listaf, a)
+    return listaf
 
+
+def precio_servicio (museo,departamento):
+    costo = 0
+    for obra in lt.iterator(museo["obras"]):
+        if obra["Department"] == departamento:
+            circunferencia = (obra["Circumference (cm)"]/100)*72
+            profundidad: (obra["Depth (cm)"]/100)*72
+            diametro: (obra["Diameter (cm)"]/100)*72
+            altura:(obra["Height (cm)"]/100)*72
+            largo: (obra["Length (cm)"]/100)*72
+            peso: (obra["Weight (kg)"])*72
+            ancho: (obra["Width (cm)"]/100)*72
+            
+            if circunferencia=="" and profundidad=="" and diametro=="" and altura=="" and largo=="" and peso=="" and ancho=="":
+                costo = 48
+            else:
+                if circunferencia>profundidad and circunferencia>diametro and circunferencia>altura and circunferencia>largo and circunferencia>peso and circunferencia>ancho:
+                    costo = circunferencia 
+                elif profundidad>circunferencia and profundidad>diametro and profundidad>altura and profundidad>largo and profundidad>peso and profundidad>ancho:
+                    costo = profundidad
+                elif diametro>profundidad and diametro>circunferencia and diametro>altura and diametro>largo and diametro>peso and diametro>ancho:
+                    costo = diametro
+                elif altura>profundidad and altura>diametro and altura>circunferencia and altura>largo and altura>peso and altura>ancho:
+                    costo = altura
+                elif largo>profundidad and largo>diametro and largo>altura and largo>circunferencia and largo>peso and largo>ancho:
+                    costo = largo
+                elif peso>profundidad and peso>diametro and peso>altura and peso>largo and peso>circunferencia and peso>ancho:
+                    costo = peso
+                else:
+                    costo = ancho
+    return costo
+
+def precio_obra (obras,museo):
+    for obra in museo:
+         if obras == obra["ConstituentID"]:
+    
+            circunferencia = (obra["Circumference (cm)"]/100)*72
+            profundidad: (obra["Depth (cm)"]/100)*72
+            diametro: (obra["Diameter (cm)"]/100)*72
+            altura:(obra["Height (cm)"]/100)*72
+            largo: (obra["Length (cm)"]/100)*72
+            peso: (obra["Weight (kg)"])*72
+            ancho: (obra["Width (cm)"]/100)*72
+            
+            if circunferencia=="" and profundidad=="" and diametro=="" and altura=="" and largo=="" and peso=="" and ancho=="":
+                costo = 48
+            else:
+                if circunferencia>profundidad and circunferencia>diametro and circunferencia>altura and circunferencia>largo and circunferencia>peso and circunferencia>ancho:
+                    costo = circunferencia 
+                elif profundidad>circunferencia and profundidad>diametro and profundidad>altura and profundidad>largo and profundidad>peso and profundidad>ancho:
+                    costo = profundidad
+                elif diametro>profundidad and diametro>circunferencia and diametro>altura and diametro>largo and diametro>peso and diametro>ancho:
+                    costo = diametro
+                elif altura>profundidad and altura>diametro and altura>circunferencia and altura>largo and altura>peso and altura>ancho:
+                    costo = altura
+                elif largo>profundidad and largo>diametro and largo>altura and largo>circunferencia and largo>peso and largo>ancho:
+                    costo = largo
+                elif peso>profundidad and peso>diametro and peso>altura and peso>largo and peso>circunferencia and peso>ancho:
+                    costo = peso
+                else:
+                    costo = ancho
+    return costo
+
+def pesoObra(museo, departamento):
+    cuenta = 0
+    for obra in lt.iterator(museo["obras"]):
+        if obra["Department"] == departamento:
+            cuenta = cuenta + obra["Weight (kg)"]
+    return cuenta
+
+def obras_costosas(museo, departamento):
+    costos = lt.newList("ARRAY_LIST")
+    lista = lt.newList("ARRAY_LIST")
+    obras_costos= lt.newList("ARRAY_LIST")
+    for obra in lt.iterator(museo["obras"]):
+        if obra["Department"] == departamento:
+            lt.addLast(costos, obra["ConstituentID"])
+            costo =precio_obra(obra["ConstituentID"])
+            lt.addLast(costos, costo)
+            lt.addLast(lista, costos)
+    sub_lista = lt.subList(lista,1,5)
+    for titulo in lt.iterator(sub_lista):
+        for artista in lt.iterator(museo["artistas"]):
+            for obra in lt.iterator(museo["obras"]):
+                if titulo == artista["ConstituentID"] and titulo == obra["ConstituentID"]:
+                    orden = lt.newList("ARRAY_LIST")
+                    lt.addLast(orden,obra["Title"])
+                    lt.addLast(orden,artista["DisplayName"])
+                    lt.addLast(orden,obra["Classification"])
+                    lt.addLast(orden,obra["Date"])
+                    lt.addLast(orden,obra["Medium"])
+                    lt.addLast(orden,obra["Dimensions"])
+                    costo = precio_obra(obra["ConstituentID"])
+                    lt.addLast(orden,costo)
+                    lt.addLast(lista,orden)
+    return lista
+            
+def cmpArtworkByDate(artwork1, artwork2):
+    """Devuelve True si la DateAquired de artwork1 es menor que la de artwork2
+    artwork: Información de la primera obra que incluye su"""
+    a= artwork1['Date']
+    b= artwork2['Date']
+    try:
+        if a !='' and b!='':
+            x= int(a)
+            y= int(b)
+            if x<y:
+                return True
+        else: 
+            return False
+    except ValueError:
+        return False
+def sortArrayListMergeDate(lista):
+    size = lt.size(lista)
+    if size > 1:
+        mid = (size // 2)
+        """se divide la lista original, en dos partes, izquierda y derecha,
+        desde el punto mid."""
+        leftlist = lt.subList(lista, 1, mid)
+        rightlist = lt.subList(lista, mid+1, size - mid)
+
+        """se hace el llamado recursivo con la lista izquierda y derecha"""
+        sortArrayListMergeDate(leftlist)
+        sortArrayListMergeDate(rightlist)
+
+        """i recorre la lista izquierda, j la derecha y k la lista original"""
+        i = j = k = 1
+
+        leftelements = lt.size(leftlist)
+        rightelements = lt.size(rightlist)
+
+        while (i <= leftelements) and (j <= rightelements):
+            elemi = lt.getElement(leftlist, i)
+            elemj = lt.getElement(rightlist, j)
+            """compara y ordena los elementos"""
+            if cmpArtworkByDate(elemj, elemi):  
+                lt.changeInfo(lista, k, elemj)
+                j += 1
+            else:                           
+                lt.changeInfo(lista, k, elemi)
+                i += 1
+            k += 1
+
+        """Agrega los elementos que no se comprararon y estan ordenados"""
+        while i <= leftelements:
+            lt.changeInfo(lista, k, lt.getElement(leftlist, i))
+            i += 1
+            k += 1
+
+        while j <= rightelements:
+            lt.changeInfo(lista, k, lt.getElement(rightlist, j))
+            j += 1
+            k += 1
+    
+    return lista
+def darUltimasObras5(museo):
+    b= lt.size(museo)
+    listaUltimos= lt.subList(museo, (b-4),5)
+    return listaUltimos
 
 
 
