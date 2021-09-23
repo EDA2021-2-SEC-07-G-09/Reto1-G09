@@ -128,7 +128,7 @@ def obraDepartamento(museo, departamento):
     listaf=model.obraDepartamento(museo, departamento)
     return listaf
 def sortArrayListMergeCost(lista):
-    model.sortArrayListMergeCost
+    model.sortArrayListMergeCost(lista)
     return lista
 
 def precioObra (obras):

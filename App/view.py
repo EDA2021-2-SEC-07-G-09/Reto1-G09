@@ -117,14 +117,14 @@ while True:
         lista= museo[articulo]
         fechai= input('Inserte el año inicial en el formato AAAA   ')
         fechaf= input('Inserte el año final en el formato AAAA    ')
-        start_time = time.process_time()
-        z= controller.sortArrayListArtistMerge(lista)
+        start_time = time.process_time()#O(K)
+        z= controller.sortArrayListArtistMerge(lista) #linearitmica O(N(logN))
 
-        lista_final= controller.fechasRangoArtist(z, fechai, fechaf)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
-        ultimas=controller.darUltimosArtistas(lista_final)
-        primeras=controller.darPrimerosArtistas(lista_final)
+        lista_final= controller.fechasRangoArtist(z, fechai, fechaf) #Lineal O(N)
+        stop_time = time.process_time() #O(K)
+        elapsed_time_mseg = (stop_time - start_time)*1000 #O(K)
+        ultimas=controller.darUltimosArtistas(lista_final) #O(K)
+        primeras=controller.darPrimerosArtistas(lista_final)#O(K)
 
         print("Artistas nacidos en el rango de fechas:   "+ str(lt.size(lista_final)))
         print('Primeros tres artistas:  ')
@@ -140,14 +140,14 @@ while True:
         lista= museo[articulo]
         fechai= input('Inserte la fecha inicial en el formato AAAA-MM-DD   ')
         fechaf= input('Inserte la fecha final en el formato AAAA-MM-DD    ')
-        start_time = time.process_time()
-        z= controller.sortArrayListMerge(lista)
-        lista_final= controller.fechasRango(z, fechai, fechaf)
+        start_time = time.process_time()#O(K)
+        z= controller.sortArrayListMerge(lista)#O(N(logN))
+        lista_final= controller.fechasRango(z, fechai, fechaf)#O(N)
         
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
-        primeras=controller.darPrimerasObras(lista_final)
-        ultimas=controller.darUltimasObras(lista_final)
+        stop_time = time.process_time()#O(K)
+        elapsed_time_mseg = (stop_time - start_time)*1000#O(K)
+        primeras=controller.darPrimerasObras(lista_final)#O(K)
+        ultimas=controller.darUltimasObras(lista_final)#O(K)
         
 
         print("Aquisiciones en el rango de fechas:  "+ str(lt.size(lista_final)))
@@ -162,16 +162,16 @@ while True:
 
     elif int(inputs[0]) == 4:
         nombre= input('Ingrese el nombre del artista que desea consultar  ')
-        start_time = time.process_time()
-        id= controller.artistaID(museo, nombre)
-        obras = controller.obrasID(museo, id)
-        numero= lt.size(obras)
-        tecnicas=controller.listarTecnicas(obras)
-        listaT = controller.contarTecnicas(tecnicas)
-        tecnicaMasFrecuente=controller.tecnicaMasFrecuente(listaT)
-        obrasTecnica= controller.clasificarObrasPorTecnica(obras, lt.firstElement(tecnicaMasFrecuente))
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
+        start_time = time.process_time()#O(K)
+        id= controller.artistaID(museo, nombre)#O(N)
+        obras = controller.obrasID(museo, id)#O(N)
+        numero= lt.size(obras)#O(1)
+        tecnicas=controller.listarTecnicas(obras)#O(N)
+        listaT = controller.contarTecnicas(tecnicas)#O(N)
+        tecnicaMasFrecuente=controller.tecnicaMasFrecuente(listaT)#O(N)
+        obrasTecnica= controller.clasificarObrasPorTecnica(obras, lt.firstElement(tecnicaMasFrecuente))#O(N)
+        stop_time = time.process_time()#O(K)
+        elapsed_time_mseg = (stop_time - start_time)*1000#O(K)
 
         print('Hay  '+str(numero)+'  obras del artista  '+nombre)
         print('El artista usa '+ str(len(listaT.keys())) +' tecnicas')
@@ -186,24 +186,26 @@ while True:
 
     elif int(inputs[0]) == 6:
         departamento= input('Inserte el departamento en el que se desea realizar el analisis   ')
-        start_time = time.process_time()
-        obras= controller.obraDepartamento(museo, departamento)
-        controller.precioObra(obras)
-        obrasA=controller.sortArrayListMergeDate(obras)
-        antiguas= controller.darUltimasObras5(obras)
-        obrasP=controller.sortArrayListMergeCost(obras)
-        caras= controller.darUltimasObras5(obrasP)
-        peso= controller.pesoObra(obras)
-        precio=controller.sumaPrecios(obras)
-        stop_time = time.process_time()
-        elapsed_time_mseg = (stop_time - start_time)*1000
+        start_time = time.process_time()#O(K)
+        obras= controller.obraDepartamento(museo, departamento)#O(N)
+        controller.precioObra(obras)#O(N)
+        obrasA=controller.sortArrayListMergeDate(obras)#O(N(logN))
+        antiguas= controller.darPrimerasObras5(obras)#O(K)
+        obrasP=controller.sortArrayListMergeCost(obras)#O(N(logN))
+        caras= controller.darUltimasObras5(obrasP)#O(K)
+        peso= controller.pesoObra(obras)#O(N)
+        precio=controller.sumaPrecios(obras)#O(N)
+        stop_time = time.process_time()#O(K)
+        elapsed_time_mseg = (stop_time - start_time)*1000#O(K)
 
         print("El total de obras a transportar es: " +str(lt.size(obras)))
         print("El estimado en USD del precio del servicio es " + str(precio))
         print ("El peso estimado de las obras es: " + str(peso))
         print("Las 5 obras mas antigua a transportar son: ")
         imprimirDatosObra4(antiguas)
+
         print("Las 5 obras mas costosas para transportar son: " )
+        print('/n/')
         imprimirDatosObra4(caras)
         print('El ordenamiento tomo   '+ str(elapsed_time_mseg)+ '  tiempo en mseg')
 
@@ -217,10 +219,10 @@ while True:
         z= controller.sortArrayListMergeDate(lista)
         listaf=controller.fechasRangoObras(z, fechai, fechaf)
         metrosObras= controller.metrosObras(float(area), listaf)
-        primeras= controller.darPrimerasObras5(metrosObras[0])
-        ultimas=controller.darUltimasObras5(metrosObras[0])
-        print('Hay'+ str(lt.size(metrosObras[0])) + 'obras en la exposición')
-        print('Se ocupan aproximadamente' + str(metrosObras[1]+ 'metros cuadrados en la exposición'))
+        primeras= controller.darPrimerasObras5(lt.getElement(metrosObras, 1))
+        ultimas=controller.darUltimasObras5(lt.getElement(metrosObras, 1))
+        print('Hay'+ str(lt.size(lt.getElement(metrosObras, 1))) + 'obras en la exposición')
+        print('Se ocupan aproximadamente' + str(lt.getElement(metrosObras, 2))+ 'metros cuadrados en la exposición')
         print ('Primeras 5 obras:')
         imprimirDatosObra3(primeras)
         print ('Ultimas 5 obras:')

@@ -27,6 +27,7 @@
 import config as cf
 import datetime as dt
 import time
+import math 
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
@@ -151,19 +152,21 @@ def fechasRangoObras(lista, fechai, fechaf):
              pass
         
     return listaf
+
 def metrosObras(area, listaf):
     size=lt.size(listaf)
     metrosOcupados=0
     obras= lt.newList('ARRAY_LIST')
     retorno=lt.newList('ARRAY_LIST')
+    
     for i in range(1, size+1):
         a=lt.getElement(listaf, i)
         d=a['Diameter (cm)']
         h=a['Height (cm)']
-        l=a['Length (cm)']
+        w=a['Length (cm)']
         depth= a['Depth (cm)']
-        w=a['Width (cm)']
-        area=0
+        l=a['Width (cm)']
+        areaO=0
         if (w==''or w=='0') and (depth=='' or depth=='0') and (d=='' or d=='0') and (h!='' and h!='0') and (l!='' and l!='0') :
             areaO= float(h)*float(l)
             areaO=areaO/100
@@ -173,6 +176,7 @@ def metrosObras(area, listaf):
         if metrosOcupados< area and metrosOcupados+areaO< area:
             metrosOcupados+=areaO
             lt.addLast(obras, a)
+
     lt.addLast(retorno, obras)
     lt.addLast(retorno, metrosOcupados)
     return retorno
@@ -189,19 +193,19 @@ def darPrimerasObras5(museo):
 def artistaID(museo, nombre):
     lista= museo['artistas']
     size= lt.size(lista)
-    i=0
-    while i<size:
-        if nombre==lista['elements'][i]['DisplayName']:
-            id= lista['elements'][i]['ConstituentID']
-        i+=1
+
+    for i in range(1, size+1):
+        a=lt.getElement(lista, i)
+        if nombre==a['DisplayName']:
+            id= a['ConstituentID']
          
     return id
 def obrasID(museo, id):
     lista= museo['obras']
     size=lt.size(lista)
     listaf=lt.newList('ARRAY_LIST')
-    i=0
-    while i<size:
+    i=1
+    while i<=size:
         try:
             a=lt.getElement(lista, i)
             b=str(a['ConstituentID'])
@@ -227,15 +231,15 @@ def clasificarObrasPorTecnica(listaf, tecnica):
  
 def listarTecnicas(listaf):
     tecnicas=lt.newList('ARRAY_LIST')
-    i=0
     size=lt.size(listaf)
-    while i<size:
+    for i in range(1, size+1):
         try:
-            a= listaf['elements'][i]['Medium']
-            lt.addLast(tecnicas, a)
-            i+=1
+            a=lt.getElement(listaf, i)
+            b= a['Medium']
+            lt.addLast(tecnicas, b)
+            
         except ValueError:
-            i+=1
+            
             pass
     return tecnicas
 
@@ -418,10 +422,6 @@ def fechasRangoArtista(lista, fechai, fechaf):
         if c<=b and c>=a:
             lt.addLast(listaf, artista)
     return listaf
-
-
-
-# Funciones para agregar informacion al catalogo
 #Requerimiento 5
 def obraDepartamento(museo, departamento):
     lista= museo['obras']
@@ -448,15 +448,16 @@ def precioObra (obras):
             llave = lt.getElement(llaves, i)
             try: 
                 atributo = float(obra[llave])/100
+                print(atributo)
             except ValueError:
                 atributo = 0.0
             lt.addLast(valores, atributo)
         
-        costo = lt.getElement(valores, 1)*72
+        costo = lt.getElement(valores, 1)*math.pi*18
 
-        area_plan = lt.getElement(valores, 4)*lt.getElement(valores, 5)*72
+        area_plan = lt.getElement(valores, 4)*lt.getElement(valores, 6)*72
         profundidad = lt.getElement(valores, 2)
-        ancho = lt.getElement(valores, 6)
+        ancho = lt.getElement(valores, 5)
         
         if  ancho != 0 and profundidad == 0:
             area_plan = ancho
@@ -548,8 +549,8 @@ def cmpArtworkByCost(artwork1, artwork2):
     b= artwork2['Costo']
     try:
         if a !='' and b!='':
-            x= int(a)
-            y= int(b)
+            x= float(a)
+            y= float(b)
             if x<y:
                 return True
         else: 
