@@ -207,7 +207,7 @@ while True:
         print("Las 5 obras mas costosas para transportar son: " )
         print('/n/')
         imprimirDatosObra4(caras)
-        print('El ordenamiento tomo  '+ str(elapsed_time_mseg)+ '  tiempo en mseg')
+        print('El ordenamiento tomo   '+ str(elapsed_time_mseg)+ '  tiempo en mseg')
 
     elif int(inputs[0]) == 7:
         print("Nueva exposición propuesta según el area disponible:" )
