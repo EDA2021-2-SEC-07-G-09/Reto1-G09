@@ -50,7 +50,7 @@ def cargarArtistas(museo):
     cada uno de ellos, se crea en la lista de autores, a dicho autor y una
     referencia al libro que se esta procesando.
     """
-    booksfile = cf.data_dir + 'Artists-utf8-large.csv'
+    booksfile = cf.data_dir + 'Artists-utf8-small.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for artista in input_file:
         model.addArtista(museo, artista)
@@ -60,7 +60,7 @@ def cargarObras(museo):
     """
     Carga todos los tags del archivo y los agrega a la lista de tags
     """
-    tagsfile = cf.data_dir + 'Artworks-utf8-large.csv'
+    tagsfile = cf.data_dir + 'Artworks-utf8-small.csv'
     input_file = csv.DictReader(open(tagsfile, encoding='utf-8'))
     for obra in input_file:
         model.addObra(museo, obra)
@@ -123,7 +123,22 @@ def tecnicaMasFrecuente(listaT):
 def clasificarObrasPorTecnica(listaf, tecnica):
     obrasTecnica=model.clasificarObrasPorTecnica(listaf,tecnica)
     return obrasTecnica
+#requisito 5
+def obraDepartamento(museo, departamento):
+    listaf=model.obraDepartamento(museo, departamento)
+    return listaf
+def sortArrayListMergeCost(lista):
+    model.sortArrayListMergeCost
+    return lista
 
+def precioObra (obras):
+    model.precioObra(obras)
+def pesoObra(obras):
+    cuenta= model.pesoObra(obras)
+    return cuenta
+def sumaPrecios(obras):
+    cuenta=model.sumaPrecios(obras)
+    return cuenta
 # Funciones de consulta sobre el catálogo
 
 def darUltimosArtistas(museo):

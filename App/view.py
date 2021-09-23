@@ -19,7 +19,6 @@
  * You should have received a copy of the GNU General Public License
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
-
 import config as cf
 import sys
 import controller
@@ -85,7 +84,15 @@ def imprimirDatosObra3(obras):
         'Medium': obra['Medium'],
         'Dimensions': obra['Dimensions']}
         print(x)
-
+def imprimirDatosObra4(obras):
+    for obra in obras['elements']:
+        x={'Title': obra['Title'],
+        'Date':obra['Date'],
+        'Clasification': obra['Classification'],
+        'Medium': obra['Medium'],
+        'Dimensions': obra['Dimensions'],
+        'Costo': obra['Costo']}
+        print(x)
 
 """
 Menu principal
@@ -178,7 +185,27 @@ while True:
         print("Obras clasificadas por la nacionalidad de su creado:")
 
     elif int(inputs[0]) == 6:
-        print("Costo de transportar las obras de un departamento:")
+        departamento= input('Inserte el departamento en el que se desea realizar el analisis   ')
+        start_time = time.process_time()
+        obras= controller.obraDepartamento(museo, departamento)
+        controller.precioObra(obras)
+        obrasA=controller.sortArrayListMergeDate(obras)
+        antiguas= controller.darUltimasObras5(obras)
+        obrasP=controller.sortArrayListMergeCost(obras)
+        caras= controller.darUltimasObras5(obrasP)
+        peso= controller.pesoObra(obras)
+        precio=controller.sumaPrecios(obras)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+
+        print("El total de obras a transportar es: " +str(lt.size(obras)))
+        print("El estimado en USD del precio del servicio es " + str(precio))
+        print ("El peso estimado de las obras es: " + str(peso))
+        print("Las 5 obras mas antigua a transportar son: ")
+        imprimirDatosObra4(antiguas)
+        print("Las 5 obras mas costosas para transportar son: " )
+        imprimirDatosObra4(caras)
+        print('El ordenamiento tomo   '+ str(elapsed_time_mseg)+ '  tiempo en mseg')
 
     elif int(inputs[0]) == 7:
         print("Nueva exposición propuesta según el area disponible:" )
